@@ -253,9 +253,11 @@ ApplicationWindow{
                                 onAccepted: {
                                     player.source = currentFile
                                     player.play()
-                                    toolsGroup.visible = false
-                                    topGroup.visible = false
                                     image.visible = false
+                                    if (maximize.state === true){
+                                        toolsGroup.visible = false
+                                        topGroup.visible = false
+                                    }
 
                                 }
 
