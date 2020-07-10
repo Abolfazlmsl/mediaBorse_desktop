@@ -516,6 +516,7 @@ compiler_rcc_clean:
 qrc_qml.cpp: ../mediabourse/qml.qrc \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_32/bin/rcc.exe \
 		../mediabourse/qtquickcontrols2.conf \
+		../mediabourse/mediabourse.jpg \
 		../mediabourse/main.qml \
 		../mediabourse/Content/font/Icon.js \
 		../mediabourse/Content/font/materialdesignicons-webfont.ttf \

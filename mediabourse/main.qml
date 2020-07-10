@@ -59,21 +59,33 @@ ApplicationWindow{
             source: player
         }
 
+        Image{
+            id: image
+            anchors.centerIn: parent
+            source: 'mediabourse.jpg'
+            verticalAlignment: Image.AlignVCenter
+            horizontalAlignment: Image.AlignHCenter
+        }
+
         MouseArea{
             anchors.fill: parent
             anchors.topMargin: topGroup.height
             anchors.bottomMargin: toolsGroup.height
             hoverEnabled: true
             onEntered: {
+                if (player.playbackState === 1){
                 if (maximize.state === true){
                     toolsGroup.visible = false
                     topGroup.visible = false
                 }
+                }
             }
             onExited: {
+                if (player.playbackState ===1){
                 if (maximize.state === true){
                     toolsGroup.visible = true
                     topGroup.visible = true
+                }
                 }
             }
 
@@ -241,6 +253,9 @@ ApplicationWindow{
                                 onAccepted: {
                                     player.source = currentFile
                                     player.play()
+                                    toolsGroup.visible = false
+                                    topGroup.visible = false
+                                    image.visible = false
 
                                 }
 
@@ -319,6 +334,9 @@ ApplicationWindow{
                                 anchors.fill: parent
                                 onClicked: {
                                     player.stop()
+                                    image.visible = true
+                                    toolsGroup.visible = true
+                                    topGroup.visible = true
                                 }
                             }
                         }
@@ -438,8 +456,15 @@ ApplicationWindow{
                     id: topitmBtns
                     Layout.fillWidth: true
                     Layout.preferredHeight: btn_playList.implicitHeight
-                    Label{
+                    Image{
+                        id: top_image
                         anchors.left: parent.left
+                        source: "mediabourse.jpg"
+                        sourceSize: Qt.size(15,15)
+                    }
+
+                    Label{
+                        anchors.left: top_image.right
                         anchors.leftMargin: 10
                         anchors.bottomMargin: 10
 
