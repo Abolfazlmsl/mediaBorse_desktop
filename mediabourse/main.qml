@@ -153,6 +153,10 @@ ApplicationWindow{
 
                         //-- playlist-play --//
 
+                        Label{
+                            width:20
+
+                        }
                         //-- speed --//
                         Label{
                             id: btn_speedLevel
@@ -206,11 +210,6 @@ ApplicationWindow{
                                     }
                                 }
                             }
-
-                        }
-
-                        Label{
-                            width:20
 
                         }
 
