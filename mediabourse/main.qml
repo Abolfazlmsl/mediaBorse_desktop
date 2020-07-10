@@ -48,6 +48,10 @@ ApplicationWindow{
                 sec = ((lackTime - (min*60000))/1000).toFixed(0)
 
                 lblTimeLack.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec)
+                if (player.position === player.duration){
+                    topGroup.visible = true
+                    toolsGroup.visible = true
+                }
             }
 
         }
@@ -298,8 +302,8 @@ ApplicationWindow{
                                         player.pause()
                                     }
                                     else if(player.playbackState === 0){
-
                                         player.play()
+
                                     }
                                     else if(player.playbackState === 2){
                                         player.play()
