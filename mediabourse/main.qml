@@ -17,21 +17,7 @@ ApplicationWindow{
 
     Material.theme: Material.Dark
     flags: Qt.MSWindowsFixedSizeDialogHint
-    /*
-    MouseArea {
-        width: parent.width
-        height: parent.height
-        hoverEnabled: true
-        onEntered: {
-            console.log(1)
-            toolsGroup.visible = true
-            topGroup.visible = true
-        }
-        onExited: {
-            console.log(2)
-            toolsGroup.visible = false
-            topGroup.visible = false
-        }*/
+
     Pane {
         id: popup
 
@@ -46,9 +32,7 @@ ApplicationWindow{
 
         MediaPlayer {
             id: player
-
-            //source: "file:///C:/Users/Developer 01/Desktop/New folder (2)/player-fix/ttt.mp4" // "file:///C:/Users/DA/Downloads/Video/Venom.mp4"
-            notifyInterval: 100
+            //notifyInterval: 100
 
             onPositionChanged: {
                 var min = Math.floor(player.position/60000)
@@ -75,24 +59,46 @@ ApplicationWindow{
             source: player
         }
 
-
+        Label{
+            id: vis_check_btm
+            width: toolsGroup.width
+            height: toolsGroup.height + 50
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    if (maximize.state === true){
+                        toolsGroup.visible = true
+                        topGroup.visible = true
+                    }
+                }
+                onExited: {
+                    if (maximize.state === true){
+                        toolsGroup.visible = false
+                        topGroup.visible = false
+                    }
+                }
+            }
+        }
         //-- tools section --//
         Rectangle{
             id: toolsGroup
 
             width: parent.width
-            height: Math.max(parent.height * 0.15 , 80)
+            height: Math.max(parent.height * 0.1 , 60)
             color: "#7726252a"
             anchors.bottom: parent.bottom
 
             ColumnLayout{
                 anchors.fill: parent
                 anchors.margins: 10
-                spacing: 1
+                spacing: -10
 
                 Slider {
                     id: sli_timer
                     Layout.fillWidth: true
+                    Layout.topMargin: -20
                     from: 0
                     to: width
                     value: (player.position/player.duration) * width
@@ -149,6 +155,72 @@ ApplicationWindow{
                         spacing: btn_playList.implicitWidth
 
                         //-- playlist-play --//
+
+                        //-- speed --//
+                        Label{
+                            id: btn_speedLevel
+                            width: 50
+
+                            font.family: "Material Design Icons"
+                            font.pixelSize: Qt.application.font.pixelSize * 2
+                            text: MdiFont.Icon.speedometer
+
+                            Popup{
+                                id: popupspeed
+                                width: list_speed.implicitWidth * 1
+                                height: btn_speedLevel.implicitHeight * 5
+                                y: -height
+                                x: -width*0.5 + btn_speedLevel.implicitWidth*0.5
+
+                                focus: true
+                                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+                                property bool state: false
+
+                                Slider{
+                                    id: list_speed
+
+                                    height: parent.height
+                                    anchors.centerIn: parent
+
+                                    from: 1
+                                    value: 1
+                                    onValueChanged: {
+                                        player.playbackRate = value
+                                    }
+
+                                    to: 4
+                                    orientation: Qt.Vertical
+                                }
+
+                            }
+                            MouseArea{
+                                anchors.fill: parent
+                                hoverEnabled: true
+
+                                onClicked: {
+                                    if (popupspeed.state === false){
+                                        popupspeed.open()
+                                        popupspeed.state = true
+                                    }
+                                    else {
+                                        popupspeed.close()
+                                        popupspeed.state = false
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Label{
+                            width:20
+
+                        }
+
+                        Label{
+                            width:20
+
+                        }
                         Label{
                             id: btn_playList
 
@@ -160,7 +232,6 @@ ApplicationWindow{
                                 anchors.fill: parent
                                 onClicked: {
                                     fileDialog.open()
-
                                 }
                             }
 
@@ -174,6 +245,7 @@ ApplicationWindow{
                                 onAccepted: {
                                     player.source = currentFile
                                     player.play()
+
                                 }
 
                             }
@@ -191,7 +263,7 @@ ApplicationWindow{
                                 onClicked: {
                                     if(player.playbackState !== 0){
 
-                                        player.seek(player.position - 10000)
+                                        player.seek(player.position - 5000)
                                     }
                                 }
                             }
@@ -235,7 +307,7 @@ ApplicationWindow{
                                 onClicked: {
                                     if(player.playbackState !== 0){
 
-                                        player.seek(player.position + 10000)
+                                        player.seek(player.position + 5000)
                                     }
                                 }
                             }
@@ -254,276 +326,259 @@ ApplicationWindow{
                                 }
                             }
                         }
-                    }
 
-
-                    Row {
-                        id: vol_row
-
-                        layoutDirection: Qt.LeftToRight
-                        anchors.right: parent.right
-                        Layout.fillWidth: true
 
                         Label{
-                            id: btn_soundLevel
+                            width:20
 
-                            //anchors.right: parent.right;
-                            anchors.rightMargin: implicitWidth * 2
+                        }
+                        Row {
+                            id: vol_row
+                            Layout.fillWidth: true
 
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.volume_medium
+                            Label{
+                                id: btn_soundLevel
 
-                            property bool state: true
+                                //anchors.right: parent.right;
+                                anchors.rightMargin: implicitWidth * 2
+                                font.family: "Material Design Icons"
+                                font.pixelSize: Qt.application.font.pixelSize * 2
+                                text: MdiFont.Icon.volume_medium
 
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    if (btn_soundLevel.state === true){
-                                        btn_soundLevel.text = MdiFont.Icon.volume_off
-                                        player.volume = 0
-                                        btn_soundLevel.state = false
-                                    }
-                                    else {
-                                        if (slider_vol.value > 75) {
-                                            btn_soundLevel.text = MdiFont.Icon.volume_high
-                                        }
-                                        else if (slider_vol.value >= 25 && slider_vol.value <= 75){
-                                            btn_soundLevel.text = MdiFont.Icon.volume_medium
-                                        }
-                                        else if (slider_vol.value === 0){
-                                            btn_soundLevel.text = MdiFont.Icon.volume_mute
+                                property bool state: true
+
+                                MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        if (btn_soundLevel.state === true){
+                                            btn_soundLevel.text = MdiFont.Icon.volume_off
+                                            player.volume = 0
+                                            btn_soundLevel.state = false
                                         }
                                         else {
-                                            btn_soundLevel.text = MdiFont.Icon.volume_low
+                                            if (slider_vol.value > 75) {
+                                                btn_soundLevel.text = MdiFont.Icon.volume_high
+                                            }
+                                            else if (slider_vol.value >= 25 && slider_vol.value <= 75){
+                                                btn_soundLevel.text = MdiFont.Icon.volume_medium
+                                            }
+                                            else if (slider_vol.value === 0){
+                                                btn_soundLevel.text = MdiFont.Icon.volume_mute
+                                            }
+                                            else {
+                                                btn_soundLevel.text = MdiFont.Icon.volume_low
+                                            }
+                                            player.volume = slider_vol.value / 100
+                                            btn_soundLevel.state = true
                                         }
-                                        player.volume = slider_vol.value / 100
-                                        btn_soundLevel.state = true
                                     }
+
+                                }
+                            }
+
+                            //-- volume_high --//
+
+                            Slider{
+                                id: slider_vol
+
+                                width: 60
+                                height: btn_soundLevel.height
+                                from: 0
+                                value: 50
+                                to: 100
+                                orientation: Qt.Horizontal
+                                onValueChanged: {
+                                    player.volume = value/100
+                                    if (slider_vol.value > 75){
+                                        btn_soundLevel.text = MdiFont.Icon.volume_high
+                                    }
+                                    else if (slider_vol.value >= 25 && slider_vol.value <= 75) {
+                                        btn_soundLevel.text = MdiFont.Icon.volume_medium
+                                    }
+                                    else if (slider_vol.value === 0){
+                                        btn_soundLevel.text = MdiFont.Icon.volume_mute
+                                    }
+                                    else if (slider_vol.value > 0 && slider_vol.value < 25){
+                                        btn_soundLevel.text = MdiFont.Icon.volume_low
+                                    }
+
+                                }
+                                MouseArea{
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    propagateComposedEvents: true
+                                    onClicked: mouse.accepted = false
+                                    onPressed: mouse.accepted = false
+                                    onReleased: mouse.accepted = false
+                                    onDoubleClicked: mouse.accepted = false
+                                    onPositionChanged: mouse.accepted = false
+                                    onPressAndHold: mouse.accepted = false
                                 }
 
                             }
                         }
 
-                        //-- volume_high --//
-
-                        Slider{
-                            id: slider_vol
-
-                            width: 60
-
-                            from: 0
-                            value: 50
-                            to: 100
-                            orientation: Qt.Horizontal
-                            onValueChanged: {
-                                player.volume = value/100
-                                if (slider_vol.value > 75){
-                                    btn_soundLevel.text = MdiFont.Icon.volume_high
-                                }
-                                else if (slider_vol.value >= 25 && slider_vol.value <= 75) {
-                                    btn_soundLevel.text = MdiFont.Icon.volume_medium
-                                }
-                                else if (slider_vol.value === 0){
-                                    btn_soundLevel.text = MdiFont.Icon.volume_mute
-                                }
-                                else if (slider_vol.value > 0 && slider_vol.value < 25){
-                                    btn_soundLevel.text = MdiFont.Icon.volume_low
-                                }
-
-                            }
-                            MouseArea{
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                propagateComposedEvents: true
-                                onClicked: mouse.accepted = false
-                                onPressed: mouse.accepted = false
-                                onReleased: mouse.accepted = false
-                                onDoubleClicked: mouse.accepted = false
-                                onPositionChanged: mouse.accepted = false
-                                onPressAndHold: mouse.accepted = false
-                            }
-
-                        }
-                    }
-                    //-- speed --//
-                    Row{
-                        anchors.right: vol_row.left
-                        anchors.left: tools_row.right
-                        spacing: 15
-
-                        Label{
-                            width:30
-
-                        }
-                        ComboBox{
-                            id: list_speed
-
-                            background: Rectangle {
-                                color: "#88FFFFFF"
-                                implicitWidth: 70
-                                implicitHeight: 30
-                                radius: 2
-
-                            }
-                            currentIndex: 3
-                            model: ListModel{
-                                ListElement{name:"x4"}
-                                ListElement{name:"x3"}
-                                ListElement{name:"x2"}
-                                ListElement{name:"x1"}
-                            }
-                            onActivated: {
-                                if (list_speed.currentText === "x1")
-                                    player.playbackRate =  1
-                                else if (list_speed.currentText === "x2")
-                                    player.playbackRate =  2
-                                else if (list_speed.currentText === "x3")
-                                    player.playbackRate =  3
-                                else if (list_speed.currentText === "x4")
-                                    player.playbackRate =  4
-                            }
-                        }
-
-                    }
                 }
-            }
 
-            Item { Layout.fillHeight: true  } //-- spacer --//
-            /*
-            MouseArea{
-                anchors.fill: parent
-                visible: true
-            }*/
+            }
         }
 
-        Rectangle{
-            id: topGroup
+        Item { Layout.fillHeight: true  } //-- spacer --//
 
-            width: parent.width
-            height: Math.max(parent.height * 0.05 , 40)
-            color: "#7726252a"
-            anchors.top: parent.top
-            ColumnLayout{
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 1
-                Item {
-                    id: topitmBtns
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: btn_playList.implicitHeight
-                    Label{
-                        anchors.left: parent.left
-                        anchors.leftMargin: 10
-                        anchors.bottomMargin: 10
-
-                        text:"MediaBourse Player"
-                        color: "#88FFFFFF"
-                        font.pixelSize: Qt.application.font.pixelSize
-                    }
-
-                    Label{
-                        anchors.centerIn: parent
-
-                        text:fileDialog.lURL
-                        color: "#88FFFFFF"
-                        font.pixelSize: Qt.application.font.pixelSize
-                    }
-                    //-- top tools button --//
-                    Row{
-                        anchors.right: parent.right
-                        spacing: btn_playList.implicitWidth
-
-                        //-- minimize --//
-                        Label{
-                            id: minimize
-
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.window_minimize
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    root.showMinimized()
-                                }
-                            }
-                        }
-                        //-- maximize --//
-                        Label{
-                            id: maximize
-
-                            property bool state: false
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.window_maximize
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    if (maximize.state === false){
-                                        root.showFullScreen()
-                                        maximize.state = true
-                                        maximize.text = MdiFont.Icon.window_restore
-                                    }
-                                    else {
-                                        root.showNormal()
-                                        maximize.state = false
-                                        maximize.text = MdiFont.Icon.window_maximize
-                                    }
-                                }
-                            }
-                        }
-                        //-- close --//
-                        Label{
-                            id: close
-
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.close
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    root.close()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
     }
 
+        Label{
+            id: vis_check_top
+            width: topGroup.width
+            height: topGroup.height
+            anchors.top: parent.top
+            MouseArea{
+                hoverEnabled: true
+                anchors.fill: parent
+                onEntered: {
+                    if (maximize.state === true){
+                        toolsGroup.visible = true
+                        topGroup.visible = true
+                    }
+                }
+                onExited: {
+                    if (maximize.state === true){
+                        toolsGroup.visible = false
+                        topGroup.visible = false
+                    }
+                }
+            }
+        }
 
     Rectangle{
-        visible: false
+        id: topGroup
+
         width: parent.width
-        height: 50
-        color: "#00FF00"
-    }
+        height: Math.max(parent.height * 0.04 , 35)
+        color: "#7726252a"
+        anchors.top: parent.top
+        ColumnLayout{
+            anchors.fill: parent
+            anchors.margins: 10
+            spacing: 1
+            Item {
+                id: topitmBtns
+                Layout.fillWidth: true
+                Layout.preferredHeight: btn_playList.implicitHeight
+                Label{
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.bottomMargin: 10
 
-    MouseArea {
-        //            anchors.fill: parent
-        width: parent.width
-        height: parent.height - toolsGroup.height
+                    text:"MediaBourse Player"
+                    color: "#88FFFFFF"
+                    font.pixelSize: Qt.application.font.pixelSize
+                }
 
-        propagateComposedEvents: true
-        property real lastMouseX: 0
-        property real lastMouseY: 0
-        acceptedButtons: Qt.LeftButton
-        onMouseXChanged: root.x += (mouseX - lastMouseX)
-        onMouseYChanged: root.y += (mouseY - lastMouseY)
-        onPressed: {
-            if(mouse.button == Qt.LeftButton){
-                parent.forceActiveFocus()
-                lastMouseX = mouseX
-                lastMouseY = mouseY
+                Label{
+                    anchors.centerIn: parent
 
-                //-- seek clip --//
-                //                    player.seek((player.duration*mouseX)/width)
+                    text:fileDialog.lURL
+                    color: "#88FFFFFF"
+                    font.pixelSize: Qt.application.font.pixelSize
+                }
+                //-- top tools button --//
+                Row{
+                    anchors.right: parent.right
+                    spacing: btn_playList.implicitWidth
+
+                    //-- minimize --//
+                    Label{
+                        id: minimize
+
+                        font.family: "Material Design Icons"
+                        font.pixelSize: Qt.application.font.pixelSize * 1.4
+                        text: MdiFont.Icon.window_minimize
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                root.showMinimized()
+                            }
+                        }
+                    }
+                    //-- maximize --//
+                    Label{
+                        id: maximize
+
+                        property bool state: false
+                        font.family: "Material Design Icons"
+                        font.pixelSize: Qt.application.font.pixelSize * 1.4
+                        text: MdiFont.Icon.window_maximize
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                if (maximize.state === false){
+                                    root.showFullScreen()
+                                    maximize.state = true
+                                    maximize.text = MdiFont.Icon.window_restore
+                                }
+                                else {
+                                    root.showNormal()
+                                    maximize.state = false
+                                    maximize.text = MdiFont.Icon.window_maximize
+                                    toolsGroup.visible = true
+                                    topGroup.visible = true
+                                }
+                            }
+                        }
+                    }
+                    //-- close --//
+                    Label{
+                        id: close
+
+                        font.family: "Material Design Icons"
+                        font.pixelSize: Qt.application.font.pixelSize * 1.4
+                        text: MdiFont.Icon.close
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                root.close()
+                            }
+                        }
+                    }
+                }
             }
-            //                mouse.accepted = false
         }
+
     }
+}
+
+
+Rectangle{
+    visible: false
+    width: parent.width
+    height: 50
+    color: "#00FF00"
+}
+
+MouseArea {
+    //            anchors.fill: parent
+    width: parent.width
+    height: parent.height - toolsGroup.height
+
+    propagateComposedEvents: true
+    property real lastMouseX: 0
+    property real lastMouseY: 0
+    acceptedButtons: Qt.LeftButton
+    onMouseXChanged: root.x += (mouseX - lastMouseX)
+    onMouseYChanged: root.y += (mouseY - lastMouseY)
+    onPressed: {
+        if(mouse.button == Qt.LeftButton){
+            parent.forceActiveFocus()
+            lastMouseX = mouseX
+            lastMouseY = mouseY
+
+            //-- seek clip --//
+            //                    player.seek((player.duration*mouseX)/width)
+        }
+        //                mouse.accepted = false
+    }
+}
 
 }
 
