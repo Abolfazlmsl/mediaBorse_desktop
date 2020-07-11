@@ -21,7 +21,30 @@ ApplicationWindow{
     Pane {
         id: popup
 
+        focus: true
+        Keys.onSpacePressed: {
+            if(player.playbackState === 1){
 
+                player.pause()
+            }
+            else if(player.playbackState === 2){
+                player.play()
+
+            }
+        }
+        Keys.onRightPressed: {
+            if(player.playbackState !== 0){
+
+                player.seek(player.position + 5000)
+            }
+        }
+
+        Keys.onLeftPressed: {
+            if(player.playbackState !== 0){
+
+                player.seek(player.position - 5000)
+            }
+        }
 
         Rectangle{
             anchors.fill: parent; color:  "#000000"
@@ -551,7 +574,6 @@ ApplicationWindow{
 
         }
     }
-
 
     Rectangle{
         visible: false
