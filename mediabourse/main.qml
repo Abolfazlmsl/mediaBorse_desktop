@@ -8,7 +8,6 @@ import Qt.labs.platform 1.0
 import QtQuick.Controls.Styles 1.4
 import "./Content/font/Icon.js" as MdiFont
 
-
 ApplicationWindow{
     id: root
     visible: true
@@ -18,45 +17,51 @@ ApplicationWindow{
     Material.theme: Material.Dark
     flags: Qt.MSWindowsFixedSizeDialogHint
 
+    function play_pause() {
+        if(player.playbackState === 1){
+
+            player.pause()
+        }
+        else if(player.playbackState === 2){
+            player.play()
+
+        }
+    }
+
+    function right_play() {
+        if(player.playbackState !== 0){
+
+            player.seek(player.position + 5000)
+        }
+    }
+
+    function left_play() {
+        if(player.playbackState !== 0){
+
+            player.seek(player.position - 5000)
+        }
+    }
+
+    function max_min() {
+        if (maximize.state === false){
+            root.showFullScreen()
+            maximize.state = true
+            maximize.text = MdiFont.Icon.window_restore
+            toolsGroup.visible = false
+            topGroup.visible = false
+        }
+        else {
+            root.showNormal()
+            maximize.state = false
+            maximize.text = MdiFont.Icon.window_maximize
+            toolsGroup.visible = true
+            topGroup.visible = true
+        }
+    }
+
+
     Pane {
         id: popup
-
-        focus: true
-        Keys.onSpacePressed: {
-            if(player.playbackState === 1){
-
-                player.pause()
-            }
-            else if(player.playbackState === 2){
-                player.play()
-
-            }
-        }
-        Keys.onRightPressed: {
-            if(player.playbackState !== 0){
-
-                player.seek(player.position + 5000)
-            }
-        }
-
-        Keys.onLeftPressed: {
-            if(player.playbackState !== 0){
-
-                player.seek(player.position - 5000)
-            }
-        }
-
-        Keys.onUpPressed: {
-            slider_vol.value = (slider_vol.value + slider_vol.value*0.05)
-            player.volume = slider_vol.value / 100
-
-        }
-
-        Keys.onDownPressed: {
-            slider_vol.value = (slider_vol.value - slider_vol.value*0.05)
-            player.volume = slider_vol.value / 100
-
-        }
 
         Rectangle{
             anchors.fill: parent; color:  "#000000"
@@ -153,16 +158,18 @@ ApplicationWindow{
                     onMoved: {
                         player.seek((player.duration*sli_timer.value)/width)
                     }
+                    focus: true
+                    Keys.onRightPressed: {
+                        right_play()
+                    }
+                    Keys.onLeftPressed: {
+                        left_play()
+                    }
                     MouseArea{
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         propagateComposedEvents: true
-                        onClicked: mouse.accepted = false
                         onPressed: mouse.accepted = false
-                        onReleased: mouse.accepted = false
-                        onDoubleClicked: mouse.accepted = false
-                        onPositionChanged: mouse.accepted = false
-                        onPressAndHold: mouse.accepted = false
                     }
 
                 }
@@ -199,7 +206,6 @@ ApplicationWindow{
                     Row{
                         id: tools_row
                         anchors.centerIn: parent
-                        //                            width: btn_playList.implicitWidth * 10
                         spacing: btn_playList.implicitWidth
 
                         //-- playlist-play --//
@@ -313,10 +319,7 @@ ApplicationWindow{
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
-                                    if(player.playbackState !== 0){
-
-                                        player.seek(player.position - 5000)
-                                    }
+                                    left_play()
                                 }
                             }
                         }
@@ -331,19 +334,7 @@ ApplicationWindow{
                                 id: ma_play
                                 anchors.fill: parent
                                 onClicked: {
-
-                                    if(player.playbackState === 1){
-
-                                        player.pause()
-                                    }
-                                    else if(player.playbackState === 0){
-                                        player.play()
-
-                                    }
-                                    else if(player.playbackState === 2){
-                                        player.play()
-                                    }
-
+                                    play_pause()
                                 }
                             }
                         }
@@ -357,10 +348,7 @@ ApplicationWindow{
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
-                                    if(player.playbackState !== 0){
-
-                                        player.seek(player.position + 5000)
-                                    }
+                                    right_play()
                                 }
                             }
                         }
@@ -458,16 +446,20 @@ ApplicationWindow{
                                     }
 
                                 }
+                                focus: true
+                                Keys.onRightPressed: {
+                                    right_play()
+                                }
+                                Keys.onLeftPressed: {
+                                    left_play()
+                                }
+
                                 MouseArea{
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
                                     propagateComposedEvents: true
-                                    onClicked: mouse.accepted = false
                                     onPressed: mouse.accepted = false
-                                    onReleased: mouse.accepted = false
-                                    onDoubleClicked: mouse.accepted = false
-                                    onPositionChanged: mouse.accepted = false
-                                    onPressAndHold: mouse.accepted = false
+
                                 }
 
                             }
@@ -551,18 +543,7 @@ ApplicationWindow{
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
-                                    if (maximize.state === false){
-                                        root.showFullScreen()
-                                        maximize.state = true
-                                        maximize.text = MdiFont.Icon.window_restore
-                                    }
-                                    else {
-                                        root.showNormal()
-                                        maximize.state = false
-                                        maximize.text = MdiFont.Icon.window_maximize
-                                        toolsGroup.visible = true
-                                        topGroup.visible = true
-                                    }
+                                    max_min()
                                 }
                             }
                         }
@@ -585,6 +566,36 @@ ApplicationWindow{
             }
 
         }
+        focus: true
+        Keys.onSpacePressed: {
+            play_pause()
+        }
+        Keys.onRightPressed: {
+            right_play()
+        }
+
+        Keys.onLeftPressed: {
+            left_play()
+        }
+
+        Keys.onUpPressed: {
+            slider_vol.value = (slider_vol.value + 5)
+            player.volume = slider_vol.value / 100
+
+        }
+
+        Keys.onDownPressed: {
+            slider_vol.value = (slider_vol.value - 5)
+            player.volume = slider_vol.value / 100
+
+        }
+
+        Keys.onEnterPressed: {
+            max_min()
+        }
+        Keys.onPressed: {
+            max_min()
+        }
     }
 
     Rectangle{
@@ -595,7 +606,6 @@ ApplicationWindow{
     }
 
     MouseArea {
-        //            anchors.fill: parent
         width: parent.width
         height: parent.height - toolsGroup.height
 
@@ -610,11 +620,7 @@ ApplicationWindow{
                 parent.forceActiveFocus()
                 lastMouseX = mouseX
                 lastMouseY = mouseY
-
-                //-- seek clip --//
-                //                    player.seek((player.duration*mouseX)/width)
             }
-            //                mouse.accepted = false
         }
     }
 
