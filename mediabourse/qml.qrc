@@ -28,5 +28,8 @@
         <file>Content/font/Icon.js</file>
         <file>Content/font/materialdesignicons-webfont.ttf</file>
         <file>mediabourse.jpg</file>
+        <file>Content/codes/Player.qml</file>
+        <file>Content/images/mediabourse.png</file>
+        <file>Content/images/mediabourse_100px.png</file>
     </qresource>
 </RCC>
