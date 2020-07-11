@@ -46,6 +46,18 @@ ApplicationWindow{
             }
         }
 
+        Keys.onUpPressed: {
+            slider_vol.value = (slider_vol.value + slider_vol.value*0.05)
+            player.volume = slider_vol.value / 100
+
+        }
+
+        Keys.onDownPressed: {
+            slider_vol.value = (slider_vol.value - slider_vol.value*0.05)
+            player.volume = slider_vol.value / 100
+
+        }
+
         Rectangle{
             anchors.fill: parent; color:  "#000000"
         }
