@@ -11,6 +11,16 @@ Item {
 
     property alias toolsHeight: toolsGroup.height
 
+    //-- top section visibile --//
+//    property alias isTopToolsVisible: topGroup.visible
+    property bool isTopToolsVisible: false
+
+    //-- maximize/ minimize parent win --//
+    property var parentWin
+
+    //-- margin offset --//
+    property bool isIgnoreOffset: false
+
     function play_pause() {
         console.log("player.playbackState: " + player.playbackState + MediaPlayer.PlayingState + MediaPlayer.PlayingState)
         if(player.playbackState === MediaPlayer.PlayingState){
@@ -41,19 +51,20 @@ Item {
     }
 
     function max_min() {
+
         if (maximize.state === false){
-            root.showFullScreen()
+            parentWin.showFullScreen()
             maximize.state = true
-            maximize.text = MdiFont.Icon.window_restore
+            maximize.text = MdiFont.window_restore
             toolsGroup.visible = false
-            topGroup.visible = false
+//            topGroup.visible = false
         }
         else {
-            root.showNormal()
+            parentWin.showNormal()
             maximize.state = false
-            maximize.text = MdiFont.Icon.window_maximize
+            maximize.text = MdiFont.window_maximize
             toolsGroup.visible = true
-            topGroup.visible = true
+//            topGroup.visible = true
         }
     }
 
@@ -66,7 +77,9 @@ Item {
         }
 
         anchors.fill: parent
-        anchors.margins: -11
+        anchors.margins: isIgnoreOffset ? 0 : -11
+
+        Material.theme: Material.Dark
 
         Image{
             id: image
@@ -80,7 +93,7 @@ Item {
         MediaPlayer {
             id: player
             //notifyInterval: 100
-            source: "file:///C:/Git_project/mediaborse_desktop/mediabourse/mediabourse_candle.mp4"
+            source: "file:///D:/projects/mediabourse/toturials/videos/mediabourse_candle.mp4"
 //            autoPlay: true
 
             onPositionChanged: {
@@ -98,7 +111,7 @@ Item {
 
                 lblTimeLack.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec)
                 if (player.position === player.duration){
-                    topGroup.visible = true
+//                    topGroup.visible = true
                     toolsGroup.visible = true
                 }
             }
@@ -122,7 +135,7 @@ Item {
                 if (player.playbackState === 1){
                 if (maximize.state === true){
                     toolsGroup.visible = false
-                    topGroup.visible = false
+//                    topGroup.visible = false
                 }
                 }
             }
@@ -130,12 +143,13 @@ Item {
                 if (player.playbackState ===1){
                 if (maximize.state === true){
                     toolsGroup.visible = true
-                    topGroup.visible = true
+//                    topGroup.visible = true
                 }
                 }
             }
 
         }
+
         //-- tools section --//
         Rectangle{
             id: toolsGroup
@@ -223,7 +237,7 @@ Item {
 
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.speedometer
+                            text: MdiFont.speedometer
 
                             Popup{
                                 id: popupspeed
@@ -281,7 +295,7 @@ Item {
 
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.playlist_play
+                            text: MdiFont.playlist_play
 
                             MouseArea{
                                 anchors.fill: parent
@@ -303,7 +317,7 @@ Item {
                                     image.visible = false
                                     if (maximize.state === true){
                                         toolsGroup.visible = false
-                                        topGroup.visible = false
+//                                        topGroup.visible = false
                                     }
 
                                 }
@@ -316,7 +330,7 @@ Item {
                         Label{
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.skip_backward
+                            text: MdiFont.skip_backward
 
                             MouseArea{
                                 anchors.fill: parent
@@ -330,7 +344,7 @@ Item {
                         Label{
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: player.playbackState === 1 ? MdiFont.Icon.pause: MdiFont.Icon.play
+                            text: player.playbackState === 1 ? MdiFont.pause: MdiFont.play
 
                             MouseArea{
                                 id: ma_play
@@ -346,7 +360,7 @@ Item {
                         Label{
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.skip_forward
+                            text: MdiFont.skip_forward
 
                             MouseArea{
                                 anchors.fill: parent
@@ -359,7 +373,7 @@ Item {
                         Label{
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: MdiFont.Icon.stop
+                            text: MdiFont.stop
 
                             MouseArea{
                                 id: ma_stop
@@ -368,7 +382,7 @@ Item {
                                     player.stop()
                                     image.visible = true
                                     toolsGroup.visible = true
-                                    topGroup.visible = true
+//                                    topGroup.visible = true
                                 }
                             }
                         }
@@ -389,7 +403,7 @@ Item {
                                 anchors.rightMargin: implicitWidth * 2
                                 font.family: "Material Design Icons"
                                 font.pixelSize: Qt.application.font.pixelSize * 2
-                                text: MdiFont.Icon.volume_medium
+                                text: MdiFont.volume_medium
 
                                 property bool state: true
 
@@ -397,22 +411,22 @@ Item {
                                     anchors.fill: parent
                                     onClicked: {
                                         if (btn_soundLevel.state === true){
-                                            btn_soundLevel.text = MdiFont.Icon.volume_off
+                                            btn_soundLevel.text = MdiFont.volume_off
                                             player.volume = 0
                                             btn_soundLevel.state = false
                                         }
                                         else {
                                             if (slider_vol.value > 75) {
-                                                btn_soundLevel.text = MdiFont.Icon.volume_high
+                                                btn_soundLevel.text = MdiFont.volume_high
                                             }
                                             else if (slider_vol.value >= 25 && slider_vol.value <= 75){
-                                                btn_soundLevel.text = MdiFont.Icon.volume_medium
+                                                btn_soundLevel.text = MdiFont.volume_medium
                                             }
                                             else if (slider_vol.value === 0){
-                                                btn_soundLevel.text = MdiFont.Icon.volume_mute
+                                                btn_soundLevel.text = MdiFont.volume_mute
                                             }
                                             else {
-                                                btn_soundLevel.text = MdiFont.Icon.volume_low
+                                                btn_soundLevel.text = MdiFont.volume_low
                                             }
                                             player.volume = slider_vol.value / 100
                                             btn_soundLevel.state = true
@@ -436,16 +450,16 @@ Item {
                                 onValueChanged: {
                                     player.volume = value/100
                                     if (slider_vol.value > 75){
-                                        btn_soundLevel.text = MdiFont.Icon.volume_high
+                                        btn_soundLevel.text = MdiFont.volume_high
                                     }
                                     else if (slider_vol.value >= 25 && slider_vol.value <= 75) {
-                                        btn_soundLevel.text = MdiFont.Icon.volume_medium
+                                        btn_soundLevel.text = MdiFont.volume_medium
                                     }
                                     else if (slider_vol.value === 0){
-                                        btn_soundLevel.text = MdiFont.Icon.volume_mute
+                                        btn_soundLevel.text = MdiFont.volume_mute
                                     }
                                     else if (slider_vol.value > 0 && slider_vol.value < 25){
-                                        btn_soundLevel.text = MdiFont.Icon.volume_low
+                                        btn_soundLevel.text = MdiFont.volume_low
                                     }
 
                                 }
@@ -479,11 +493,13 @@ Item {
 
         Rectangle{
             id: topGroup
+            visible: false
 
             width: parent.width
             height: Math.max(parent.height * 0.04 , 35)
             color: "#7726252a"
             anchors.top: parent.top
+
             ColumnLayout{
                 anchors.fill: parent
                 anchors.margins: 10
@@ -527,7 +543,7 @@ Item {
 
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 1.4
-                            text: MdiFont.Icon.window_minimize
+                            text: MdiFont.window_minimize
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
@@ -542,7 +558,7 @@ Item {
                             property bool state: false
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 1.4
-                            text: MdiFont.Icon.window_maximize
+                            text: MdiFont.window_maximize
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
@@ -556,7 +572,7 @@ Item {
 
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 1.4
-                            text: MdiFont.Icon.close
+                            text: MdiFont.close
                             MouseArea{
                                 anchors.fill: parent
                                 onClicked: {
@@ -569,6 +585,7 @@ Item {
             }
 
         }
+
         focus: true
         Keys.onSpacePressed: {
             play_pause()
@@ -599,13 +616,6 @@ Item {
         Keys.onPressed: {
             max_min()
         }
-    }
-
-    Rectangle{
-        visible: false
-        width: parent.width
-        height: 50
-        color: "#00FF00"
     }
 
 

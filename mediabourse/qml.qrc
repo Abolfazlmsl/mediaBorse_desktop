@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>qtquickcontrols2.conf</file>
         <file>Content/font/MaterialDesign-Webfont-master/.github/ISSUE_TEMPLATE.md</file>
         <file>Content/font/MaterialDesign-Webfont-master/css/materialdesignicons.css</file>
         <file>Content/font/MaterialDesign-Webfont-master/css/materialdesignicons.css.map</file>
@@ -27,9 +26,28 @@
         <file>Content/font/MaterialDesign-Webfont-master/README.md</file>
         <file>Content/font/Icon.js</file>
         <file>Content/font/materialdesignicons-webfont.ttf</file>
-        <file>mediabourse.jpg</file>
         <file>Content/codes/Player.qml</file>
         <file>Content/images/mediabourse.png</file>
         <file>Content/images/mediabourse_100px.png</file>
+        <file>Content/codes/PlayerWin.qml</file>
+        <file>Content/codes/Utils/SearchField.qml</file>
+        <file>Content/font/IRANSans_Medium.ttf</file>
+        <file>Content/font/IRANSansMobile(FaNum).ttf</file>
+        <file>Content/font/IRANSansMobile.ttf</file>
+        <file>Content/font/IRANSansMobile_Bold.ttf</file>
+        <file>Content/font/IRYekan.ttf</file>
+        <file>Content/font/OpenSans-Regular.ttf</file>
+        <file>Content/font/segoeui.ttf</file>
+        <file>Content/font/segoeuib.ttf</file>
+        <file>Content/font/segoeuil.ttf</file>
+        <file>Content/font/Yekan.ttf</file>
+        <file>Content/images/tools/done+exam+list+pencil+todo+icon-1320196901489830645.png</file>
+        <file>Content/images/Questions/Sec1Lession1Q1/candle_chart.png</file>
+        <file>Content/images/Questions/Sec1Lession1Q1/fill_chart.png</file>
+        <file>Content/images/Questions/Sec1Lession1Q1/line_chart.png</file>
+        <file>Content/images/Questions/Sec1Lession1Q1/mileh_chart.png</file>
+        <file>Content/images/tools/check.png</file>
+        <file>Content/images/tools/wrong.png</file>
+        <file>Content/codes/Utils/QuestionTile.qml</file>
     </qresource>
 </RCC>
