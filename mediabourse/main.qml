@@ -18,7 +18,36 @@ ApplicationWindow{
     height: 700
 
     Material.theme: Material.Light
-//    flags: Qt.MSWindowsFixedSizeDialogHint
+    //    flags: Qt.MSWindowsFixedSizeDialogHint
+
+    function check1() {
+        if (grid_1.answer === true){
+            rect1_img.source = "qrc:/Content/images/tools/check.png"
+
+        }
+        else {
+            rect1_img.source = "qrc:/Content/images/tools/wrong.png"
+        }
+        rect1_img.visible = true
+    }
+    function check2() {
+        if (grid_2.answer === true){
+            rect2_img.source = "qrc:/Content/images/tools/check.png"
+        }
+        else {
+            rect2_img.source = "qrc:/Content/images/tools/wrong.png"
+        }
+        rect2_img.visible = true
+    }
+    function check3() {
+        if (grid_3.answer === true){
+            rect3_img.source = "qrc:/Content/images/tools/check.png"
+        }
+        else {
+            rect3_img.source = "qrc:/Content/images/tools/wrong.png"
+        }
+        rect3_img.visible = true
+    }
 
     FontLoader{
         id: font_irans
@@ -310,143 +339,226 @@ ApplicationWindow{
                                 layoutDirection: Qt.RightToLeft
                                 spacing: 100
 
-                            ColumnLayout{
+                                ColumnLayout{
 
-                                Rectangle {
-                                    anchors.margins: 5
-                                    width: 100
-                                    height: 64
-                                    color: "#00ffff"
+                                    Rectangle {
+                                        anchors.margins: 5
+                                        width: 150
+                                        height: 64
+                                        color: "#00ffff"
 
-                                    Text {
-                                        text: qsTr("سود تضمینی")
-                                        anchors.fill: parent
-                                        color: "#000000"
-                                        font.pixelSize: 15
-                                        horizontalAlignment:Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
+
+                                        Text {
+                                            text: qsTr("سود تضمینی")
+                                            anchors.fill: parent
+                                            color: "#000000"
+                                            font.pixelSize: 15
+                                            horizontalAlignment:Text.AlignHCenter
+                                            verticalAlignment: Text.AlignVCenter
+                                        }
+
+                                    }
+                                    Rectangle {
+                                        anchors.margins: 5
+                                        width: 150
+                                        height: 64
+                                        color: "#00ffff"
+
+                                        Text {
+                                            text: qsTr("سود تخمینی")
+                                            anchors.fill: parent
+                                            color: "#000000"
+                                            font.pixelSize: 15
+                                            horizontalAlignment:Text.AlignHCenter
+                                            verticalAlignment: Text.AlignVCenter
+                                        }
+
+                                    }
+                                    Rectangle {
+                                        anchors.margins: 5
+                                        width: 150
+                                        height: 64
+                                        color: "#00ffff"
+
+                                        Text {
+                                            text: qsTr("نسبت قیمت به درآمد")
+                                            anchors.fill: parent
+                                            color: "#000000"
+                                            font.pixelSize: 15
+                                            horizontalAlignment:Text.AlignHCenter
+                                            verticalAlignment: Text.AlignVCenter
+                                        }
+
                                     }
 
                                 }
-                                Rectangle {
-                                    anchors.margins: 5
-                                    width: 100
-                                    height: 64
-                                    color: "#00ffff"
 
-                                    Text {
-                                        text: qsTr("سود تخمینی")
-                                        anchors.fill: parent
-                                        color: "#000000"
-                                        font.pixelSize: 15
-                                        horizontalAlignment:Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
+                                ColumnLayout{
+
+                                    Grid {
+                                        id: grid_1
+
+                                        property bool answer: false
+                                        anchors.margins: 5
+                                        opacity: 0.5
+                                        columns: 1
+
+                                        DropTile {
+                                            id: grid1
+                                            colorKey: "red"
+                                            answer: "DPS"
+                                        }
                                     }
+                                    Grid {
+                                        id: grid_2
+                                        property bool answer: false
+                                        anchors.margins: 5
+                                        opacity: 0.5
+                                        columns: 1
 
-                                }
-                                Rectangle {
-                                    anchors.margins: 5
-                                    width: 100
-                                    height: 64
-                                    color: "#00ffff"
 
-                                    Text {
-                                        text: qsTr("قیمت به درآمد")
-                                        anchors.fill: parent
-                                        color: "#000000"
-                                        font.pixelSize: 15
-                                        horizontalAlignment:Text.AlignHCenter
-                                        verticalAlignment: Text.AlignVCenter
+                                        DropTile {id: grid2; colorKey: "red"; answer: "EPS"  }
+
                                     }
+                                    Grid {
+                                        id: grid_3
+                                        property bool answer: false
+                                        anchors.margins: 5
+                                        opacity: 0.5
+                                        columns: 1
 
+                                        DropTile {id: grid3; colorKey: "red"; answer: "P/E"  }
+
+                                    }
                                 }
 
-                            }
+                                ColumnLayout{
+                                    spacing: 60
+                                    Label{
+                                        verticalAlignment: Qt.AlignVCenter
+                                        Image {
+                                            id: rect1_img
+                                            anchors.centerIn: parent
+                                            source: "qrc:/Content/images/tools/wrong.png"
+                                            sourceSize: Qt.size(50,50)
+                                            verticalAlignment: Qt.AlignVCenter
+                                            visible: false
+                                        }
+                                    }
+                                    Label{
+                                        verticalAlignment: Qt.AlignVCenter
+                                        Image {
+                                            id: rect2_img
+                                            anchors.centerIn: parent
+                                            source: "qrc:/Content/images/tools/wrong.png"
+                                            sourceSize: Qt.size(50,50)
+                                            verticalAlignment: Qt.AlignVCenter
+                                            visible: false
 
-                            ColumnLayout{
-
-                                Grid {
-                                    id: grid_1
-                                    anchors.margins: 5
-                                    opacity: 0.5
-                                    columns: 1
-
-                                    Repeater {
-                                        model: 1;
-                                        delegate: DropTile {
-                                            colorKey: "red"; answer: "DPS"
+                                        }
+                                    }
+                                    Label{
+                                        verticalAlignment: Qt.AlignVCenter
+                                        Image {
+                                            id: rect3_img
+                                            anchors.centerIn: parent
+                                            source: "qrc:/Content/images/tools/wrong.png"
+                                            sourceSize: Qt.size(50,50)
+                                            verticalAlignment: Qt.AlignVCenter
+                                            visible: false
                                         }
                                     }
                                 }
-                                Grid {
-                                    id: grid_2
-                                    anchors.margins: 5
-                                    opacity: 0.5
-                                    columns: 1
 
-                                    Repeater {
-                                        model: 1;
-                                        delegate: DropTile { colorKey: "red"; answer: "EPS"  }
-                                    }
-                                }
-                                Grid {
-                                    id: grid_3
 
-                                    anchors.margins: 5
-                                    opacity: 0.5
-                                    columns: 1
+                                ColumnLayout{
 
-                                    Repeater {
-                                        model: 1;
-                                        delegate: DropTile { colorKey: "red"; answer: "P/E"  }
-                                    }
-                                }
-                            }
+                                    height: 350
+                                    Layout.alignment: Qt.AlignRight
 
-                            ColumnLayout{
+                                    Column {
+                                        objectName: "EPS"
+                                        anchors.margins: 5
+                                        width: 64
+                                        spacing: -16
+                                        DragTile {
+                                            id: tile_opt4_2
+                                            modelText: "EPS"
+                                            colorKey: "red"
 
-                                height: 350
-                                Layout.alignment: Qt.AlignRight
-
-                                Column {
-                                    id: tile_opt4_2
-                                    anchors.margins: 5
-                                    width: 64
-                                    spacing: -16
-                                    DragTile {
-                                        modelText: "EPS"
-                                        colorKey: "red"
-
-                                        onObjReleased:{
-
+                                            onObjReleased:{
+                                                if (grid1.containsDrag === true){
+                                                    grid_1.answer = false
+                                                    check1()
+                                                }
+                                                else if (grid2.containsDrag === true){
+                                                    grid_2.answer = true
+                                                    check2()
+                                                }
+                                                else if (grid3.containsDrag === true){
+                                                    grid_3.answer = false
+                                                    check3()
+                                                }
+                                            }
                                         }
+
+                                    }
+                                    Column {
+
+                                        objectName: "P/E"
+                                        anchors.margins: 5
+                                        width: 64
+                                        spacing: -16
+                                        DragTile {
+                                            id: tile_opt5_2
+                                            modelText: "P/E"
+                                            colorKey: "red"
+                                            onObjReleased:{
+                                                if (grid1.containsDrag === true){
+                                                    grid_1.answer = false
+                                                    check1()
+                                                }
+                                                else if (grid2.containsDrag === true){
+                                                    grid_2.answer = false
+                                                    check2()
+                                                }
+                                                else if (grid3.containsDrag === true){
+                                                    grid_3.answer = true
+                                                    check3()
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    Column {
+
+                                        objectName: "DPS"
+                                        anchors.margins: 5
+                                        width: 64
+                                        spacing: -16
+                                        DragTile {
+                                            id: tile_opt6_2
+                                            modelText: "DPS"
+                                            colorKey: "red"
+                                            onObjReleased:{
+                                                if (grid1.containsDrag === true){
+                                                    grid_1.answer = true
+                                                    check1()
+                                                }
+                                                else if (grid2.containsDrag === true){
+                                                    grid_2.answer = false
+                                                    check2()
+                                                }
+                                                else if (grid3.containsDrag === true){
+                                                    grid_3.answer = false
+                                                    check3()
+                                                }
+                                            }
+                                        }
+
                                     }
 
                                 }
-                                Column {
-                                    id: tile_opt5_2
-                                    anchors.margins: 5
-                                    width: 64
-                                    spacing: -16
-                                    DragTile {
-                                        modelText: "P/E"
-                                        colorKey: "red"
-                                    }
-
-                                }
-                                Column {
-                                    id: tile_opt6_2
-                                    anchors.margins: 5
-                                    width: 64
-                                    spacing: -16
-                                    DragTile {
-                                        modelText: "DPS"
-                                        colorKey: "red"
-                                    }
-
-                                }
-
-                            }
                             }
 
                         }
@@ -576,7 +688,7 @@ ApplicationWindow{
                                 Rectangle{anchors.fill: parent; color: index%2 ? "transparent" : "#44e0e0e0"; }
 
                                 //-- selected backgroung --//
-//                                Rectangle{visible: isSelected ;anchors.fill: parent; color: "#4400ff00"; }
+                                //                                Rectangle{visible: isSelected ;anchors.fill: parent; color: "#4400ff00"; }
 
                                 RowLayout{
                                     anchors.fill: parent

@@ -20,7 +20,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -g -std=gnu++11 -Wall -Wextra -Wextra
 INCPATH       = -I..\mediabourse -I. -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtQuick -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtGui -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtANGLE -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtQmlModels -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtQml -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtNetwork -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\include\QtCore -I. -IC:\Qt\Qt5.14.0\5.14.0\mingw73_32\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Quick.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Gui.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5QmlModels.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Qml.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Network.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Core.a  -lmingw32 C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libqtmain.a -LC:\openssl\lib -LC:\Utils\my_sql\mysql-5.7.25-win32\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 
+LIBS        =        C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Quick.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Gui.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5QmlModels.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Qml.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Network.a C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libQt5Core.a mediabourse_resource_res.o  -lmingw32 C:\Qt\Qt5.14.0\5.14.0\mingw73_32\lib\libqtmain.a -LC:\openssl\lib -LC:\Utils\my_sql\mysql-5.7.25-win32\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 
 QMAKE         = C:\Qt\Qt5.14.0\5.14.0\mingw73_32\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -41,7 +41,7 @@ IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = mediabourse_resource_res.o
 SED           = $(QMAKE) -install sed
 MOVE          = move
 
@@ -66,8 +66,11 @@ DESTDIR_TARGET = mediabourse.exe
 first: all
 all: Makefile  mediabourse.exe
 
-mediabourse.exe: C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Quick.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Gui.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5QmlModels.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Qml.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Network.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Core.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libqtmain.a $(OBJECTS) 
+mediabourse.exe: C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Quick.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Gui.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5QmlModels.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Qml.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Network.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libQt5Core.a C:/Qt/Qt5.14.0/5.14.0/mingw73_32/lib/libqtmain.a $(OBJECTS) mediabourse_resource_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
+
+mediabourse_resource_res.o: mediabourse_resource.rc
+	windres -i mediabourse_resource.rc -o mediabourse_resource_res.o --include-dir=. $(DEFINES)
 
 Makefile: ../mediabourse/mediabourse.pro C:/Qt/Qt5.14.0/5.14.0/mingw73_32/mkspecs/win32-g++/qmake.conf C:/Qt/Qt5.14.0/5.14.0/mingw73_32/mkspecs/features/spec_pre.prf \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_32/mkspecs/qdevice.pri \
@@ -494,6 +497,7 @@ dist:
 
 clean: compiler_clean 
 	-$(DEL_FILE) main.o qrc_qml.o
+	-$(DEL_FILE) mediabourse_resource_res.o
 
 distclean: clean 
 	-$(DEL_FILE) .qmake.stash
@@ -515,11 +519,34 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qml.cpp
 qrc_qml.cpp: ../mediabourse/qml.qrc \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_32/bin/rcc.exe \
-		../mediabourse/qtquickcontrols2.conf \
-		../mediabourse/mediabourse.jpg \
+		../mediabourse/DragTile.qml \
 		../mediabourse/main.qml \
+		../mediabourse/DropTile.qml \
+		../mediabourse/Content/images/mediabourse.png \
+		../mediabourse/Content/images/mediabourse_100px.png \
+		../mediabourse/Content/images/tools/wrong.png \
+		../mediabourse/Content/images/tools/check.png \
+		../mediabourse/Content/images/tools/done+exam+list+pencil+todo+icon-1320196901489830645.png \
+		../mediabourse/Content/images/Questions/Sec1Lession1Q1/mileh_chart.png \
+		../mediabourse/Content/images/Questions/Sec1Lession1Q1/candle_chart.png \
+		../mediabourse/Content/images/Questions/Sec1Lession1Q1/fill_chart.png \
+		../mediabourse/Content/images/Questions/Sec1Lession1Q1/line_chart.png \
+		../mediabourse/Content/codes/Player.qml \
+		../mediabourse/Content/codes/PlayerWin.qml \
+		../mediabourse/Content/codes/Utils/SearchField.qml \
+		../mediabourse/Content/codes/Utils/QuestionTile.qml \
 		../mediabourse/Content/font/Icon.js \
+		../mediabourse/Content/font/segoeuil.ttf \
 		../mediabourse/Content/font/materialdesignicons-webfont.ttf \
+		../mediabourse/Content/font/IRANSansMobile.ttf \
+		../mediabourse/Content/font/segoeui.ttf \
+		../mediabourse/Content/font/Yekan.ttf \
+		../mediabourse/Content/font/IRANSansMobile_Bold.ttf \
+		../mediabourse/Content/font/IRANSansMobile(FaNum).ttf \
+		../mediabourse/Content/font/IRANSans_Medium.ttf \
+		../mediabourse/Content/font/segoeuib.ttf \
+		../mediabourse/Content/font/IRYekan.ttf \
+		../mediabourse/Content/font/OpenSans-Regular.ttf \
 		../mediabourse/Content/font/MaterialDesign-Webfont-master/bower.json \
 		../mediabourse/Content/font/MaterialDesign-Webfont-master/package.json \
 		../mediabourse/Content/font/MaterialDesign-Webfont-master/preview.html \
