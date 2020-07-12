@@ -283,6 +283,174 @@ ApplicationWindow{
                         }
                     }
 
+                    //-- q2 --//
+                    Rectangle{
+                        visible: listmodel.get(lv.currentIndex).qNum === 2 ? true : false
+
+                        width: parent.width * 0.8
+                        height: parent.height * 0.8
+                        anchors.centerIn: parent
+                        color: "#0900FF00"
+
+                        ColumnLayout{
+                            anchors.fill: parent
+
+                            //-- question --//
+                            Label{
+                                text: "جواب صحیح را در رو به روی توضیح مورد نظر آن قرار دهید. "
+                                font.pixelSize: Qt.application.font.pixelSize * 2
+                                Layout.alignment: Qt.AlignHCenter
+                            }
+
+                            Item{Layout.preferredHeight: lblSize.implicitHeight*2}
+
+                            //-- options 1, 2 --//
+                            RowLayout{
+                                Layout.alignment: Qt.AlignHCenter
+                                layoutDirection: Qt.RightToLeft
+                                spacing: 100
+
+                            ColumnLayout{
+
+                                Rectangle {
+                                    anchors.margins: 5
+                                    width: 100
+                                    height: 64
+                                    color: "#00ffff"
+
+                                    Text {
+                                        text: qsTr("سود تضمینی")
+                                        anchors.fill: parent
+                                        color: "#000000"
+                                        font.pixelSize: 15
+                                        horizontalAlignment:Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
+
+                                }
+                                Rectangle {
+                                    anchors.margins: 5
+                                    width: 100
+                                    height: 64
+                                    color: "#00ffff"
+
+                                    Text {
+                                        text: qsTr("سود تخمینی")
+                                        anchors.fill: parent
+                                        color: "#000000"
+                                        font.pixelSize: 15
+                                        horizontalAlignment:Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
+
+                                }
+                                Rectangle {
+                                    anchors.margins: 5
+                                    width: 100
+                                    height: 64
+                                    color: "#00ffff"
+
+                                    Text {
+                                        text: qsTr("قیمت به درآمد")
+                                        anchors.fill: parent
+                                        color: "#000000"
+                                        font.pixelSize: 15
+                                        horizontalAlignment:Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
+
+                                }
+
+                            }
+
+                            ColumnLayout{
+
+                                Grid {
+                                    id: grid_1
+                                    anchors.margins: 5
+                                    opacity: 0.5
+                                    columns: 1
+
+                                    Repeater {
+                                        model: 1;
+                                        delegate: DropTile {
+                                            colorKey: "red"; answer: "DPS"
+                                        }
+                                    }
+                                }
+                                Grid {
+                                    id: grid_2
+                                    anchors.margins: 5
+                                    opacity: 0.5
+                                    columns: 1
+
+                                    Repeater {
+                                        model: 1;
+                                        delegate: DropTile { colorKey: "red"; answer: "EPS"  }
+                                    }
+                                }
+                                Grid {
+                                    id: grid_3
+
+                                    anchors.margins: 5
+                                    opacity: 0.5
+                                    columns: 1
+
+                                    Repeater {
+                                        model: 1;
+                                        delegate: DropTile { colorKey: "red"; answer: "P/E"  }
+                                    }
+                                }
+                            }
+
+                            ColumnLayout{
+
+                                height: 350
+                                Layout.alignment: Qt.AlignRight
+
+                                Column {
+                                    id: tile_opt4_2
+                                    anchors.margins: 5
+                                    width: 64
+                                    spacing: -16
+                                    DragTile {
+                                        modelText: "EPS"
+                                        colorKey: "red"
+
+                                        onObjReleased:{
+
+                                        }
+                                    }
+
+                                }
+                                Column {
+                                    id: tile_opt5_2
+                                    anchors.margins: 5
+                                    width: 64
+                                    spacing: -16
+                                    DragTile {
+                                        modelText: "P/E"
+                                        colorKey: "red"
+                                    }
+
+                                }
+                                Column {
+                                    id: tile_opt6_2
+                                    anchors.margins: 5
+                                    width: 64
+                                    spacing: -16
+                                    DragTile {
+                                        modelText: "DPS"
+                                        colorKey: "red"
+                                    }
+
+                                }
+
+                            }
+                            }
+
+                        }
+                    }
                 }
 
             }

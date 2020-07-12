@@ -586,6 +586,14 @@ Item {
 
         }
 
+        Shortcut{
+//            sequence: "Ctrl+E,Ctrl+W"
+            sequence: "W"
+            onActivated:{
+
+            }
+        }
+
         focus: true
         Keys.onSpacePressed: {
             play_pause()
