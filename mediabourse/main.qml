@@ -367,6 +367,7 @@ ApplicationWindow{
 
                                 Grid {
                                     id: grid_1
+                                    objectName: "DPS"
                                     anchors.margins: 5
                                     opacity: 0.5
                                     columns: 1
@@ -374,31 +375,34 @@ ApplicationWindow{
                                     Repeater {
                                         model: 1;
                                         delegate: DropTile {
-                                            colorKey: "red"; answer: "DPS"
+                                            id: grid1;
+                                            colorKey: "red";
                                         }
                                     }
                                 }
                                 Grid {
                                     id: grid_2
+                                    objectName: "EPS"
                                     anchors.margins: 5
                                     opacity: 0.5
                                     columns: 1
 
                                     Repeater {
                                         model: 1;
-                                        delegate: DropTile { colorKey: "red"; answer: "EPS"  }
+                                        delegate: DropTile {id: grid2; colorKey: "red" }
                                     }
                                 }
                                 Grid {
                                     id: grid_3
 
+                                    objectName: "P/E"
                                     anchors.margins: 5
                                     opacity: 0.5
                                     columns: 1
 
                                     Repeater {
                                         model: 1;
-                                        delegate: DropTile { colorKey: "red"; answer: "P/E"  }
+                                        delegate: DropTile {id: grid3; colorKey: "red" }
                                     }
                                 }
                             }
@@ -418,8 +422,9 @@ ApplicationWindow{
                                         colorKey: "red"
 
                                         onObjReleased:{
-
+                                            console.log(Drag.source.objectName)
                                         }
+
                                     }
 
                                 }
