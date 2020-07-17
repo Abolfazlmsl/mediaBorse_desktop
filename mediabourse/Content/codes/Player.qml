@@ -12,7 +12,7 @@ Item {
     property alias toolsHeight: toolsGroup.height
 
     //-- top section visibile --//
-//    property alias isTopToolsVisible: topGroup.visible
+    //    property alias isTopToolsVisible: topGroup.visible
     property bool isTopToolsVisible: false
 
     //-- maximize/ minimize parent win --//
@@ -53,18 +53,18 @@ Item {
     function max_min() {
 
         if (maximize.state === false){
-            parentWin.showFullScreen()
+            root.showFullScreen()
             maximize.state = true
             maximize.text = MdiFont.window_restore
             toolsGroup.visible = false
-//            topGroup.visible = false
+            topGroup.visible = false
         }
         else {
-            parentWin.showNormal()
+            root.showNormal()
             maximize.state = false
             maximize.text = MdiFont.window_maximize
             toolsGroup.visible = true
-//            topGroup.visible = true
+            topGroup.visible = true
         }
     }
 
@@ -94,7 +94,7 @@ Item {
             id: player
             //notifyInterval: 100
             source: "file:///D:/projects/mediabourse/toturials/videos/mediabourse_candle.mp4"
-//            autoPlay: true
+            //            autoPlay: true
 
             onPositionChanged: {
                 var min = Math.floor(player.position/60000)
@@ -111,7 +111,7 @@ Item {
 
                 lblTimeLack.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec)
                 if (player.position === player.duration){
-//                    topGroup.visible = true
+                    topGroup.visible = true
                     toolsGroup.visible = true
                 }
             }
@@ -132,20 +132,18 @@ Item {
             anchors.bottomMargin: toolsGroup.height
             hoverEnabled: true
             onEntered: {
-                if (player.playbackState === 1){
                 if (maximize.state === true){
                     toolsGroup.visible = false
-//                    topGroup.visible = false
+                    topGroup.visible = false
                 }
-                }
+
             }
             onExited: {
-                if (player.playbackState ===1){
                 if (maximize.state === true){
                     toolsGroup.visible = true
-//                    topGroup.visible = true
+                    topGroup.visible = true
                 }
-                }
+
             }
 
         }
@@ -317,7 +315,7 @@ Item {
                                     image.visible = false
                                     if (maximize.state === true){
                                         toolsGroup.visible = false
-//                                        topGroup.visible = false
+                                        //                                        topGroup.visible = false
                                     }
 
                                 }
@@ -382,7 +380,7 @@ Item {
                                     player.stop()
                                     image.visible = true
                                     toolsGroup.visible = true
-//                                    topGroup.visible = true
+                                    topGroup.visible = true
                                 }
                             }
                         }
@@ -493,7 +491,7 @@ Item {
 
         Rectangle{
             id: topGroup
-            visible: false
+            visible: true
 
             width: parent.width
             height: Math.max(parent.height * 0.04 , 35)
@@ -537,20 +535,6 @@ Item {
                         anchors.right: parent.right
                         spacing: btn_playList.implicitWidth
 
-                        //-- minimize --//
-                        Label{
-                            id: minimize
-
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 1.4
-                            text: MdiFont.window_minimize
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    root.showMinimized()
-                                }
-                            }
-                        }
                         //-- maximize --//
                         Label{
                             id: maximize
@@ -566,20 +550,6 @@ Item {
                                 }
                             }
                         }
-                        //-- close --//
-                        Label{
-                            id: close
-
-                            font.family: "Material Design Icons"
-                            font.pixelSize: Qt.application.font.pixelSize * 1.4
-                            text: MdiFont.close
-                            MouseArea{
-                                anchors.fill: parent
-                                onClicked: {
-                                    root.close()
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -587,7 +557,7 @@ Item {
         }
 
         Shortcut{
-//            sequence: "Ctrl+E,Ctrl+W"
+            //            sequence: "Ctrl+E,Ctrl+W"
             sequence: "W"
             onActivated:{
 

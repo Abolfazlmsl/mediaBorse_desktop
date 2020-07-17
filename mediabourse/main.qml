@@ -20,7 +20,26 @@ ApplicationWindow{
     Material.theme: Material.Light
     //    flags: Qt.MSWindowsFixedSizeDialogHint
 
+    function disable(){
+        if (grid_1.enable === true){
+            rect1_img.visible = false
+            grid_1.enable = false
+        } else if (grid_2.enable === true){
+            rect2_img.visible = false
+            grid_2.enable = false
+        } else if (grid_3.enable === true){
+            rect3_img.visible = false
+            grid_3.enable = false
+        }
+    }
+
     function check1() {
+        if (rect2_img.visible === true){
+            rect2_img.visible = false
+        } else if (rect3_img.visible === true){
+            rect3_img.visible = false
+        }
+
         if (grid_1.answer === true){
             rect1_img.source = "qrc:/Content/images/tools/check.png"
 
@@ -31,6 +50,11 @@ ApplicationWindow{
         rect1_img.visible = true
     }
     function check2() {
+        if (rect1_img.visible === true){
+            rect1_img.visible = false
+        } else if (rect3_img.visible === true){
+            rect3_img.visible = false
+        }
         if (grid_2.answer === true){
             rect2_img.source = "qrc:/Content/images/tools/check.png"
         }
@@ -40,6 +64,11 @@ ApplicationWindow{
         rect2_img.visible = true
     }
     function check3() {
+        if (rect1_img.visible === true){
+            rect1_img.visible = false
+        } else if (rect2_img.visible === true){
+            rect2_img.visible = false
+        }
         if (grid_3.answer === true){
             rect3_img.source = "qrc:/Content/images/tools/check.png"
         }
@@ -48,6 +77,7 @@ ApplicationWindow{
         }
         rect3_img.visible = true
     }
+
 
     FontLoader{
         id: font_irans
@@ -399,6 +429,7 @@ ApplicationWindow{
                                         id: grid_1
 
                                         property bool answer: false
+                                        property bool enable: false
                                         anchors.margins: 5
                                         opacity: 0.5
                                         columns: 1
@@ -406,28 +437,29 @@ ApplicationWindow{
                                         DropTile {
                                             id: grid1
                                             colorKey: "red"
-                                            answer: "DPS"
                                         }
                                     }
                                     Grid {
                                         id: grid_2
                                         property bool answer: false
+                                        property bool enable: false
                                         anchors.margins: 5
                                         opacity: 0.5
                                         columns: 1
 
 
-                                        DropTile {id: grid2; colorKey: "red"; answer: "EPS"  }
+                                        DropTile {id: grid2; colorKey: "red"}
 
                                     }
                                     Grid {
                                         id: grid_3
                                         property bool answer: false
+                                        property bool enable: false
                                         anchors.margins: 5
                                         opacity: 0.5
                                         columns: 1
 
-                                        DropTile {id: grid3; colorKey: "red"; answer: "P/E"  }
+                                        DropTile {id: grid3; colorKey: "red" }
 
                                     }
                                 }
@@ -489,15 +521,21 @@ ApplicationWindow{
                                             onObjReleased:{
                                                 if (grid1.containsDrag === true){
                                                     grid_1.answer = false
+                                                    grid_1.enable = true
                                                     check1()
                                                 }
                                                 else if (grid2.containsDrag === true){
                                                     grid_2.answer = true
+                                                    grid_2.enable = true
                                                     check2()
                                                 }
                                                 else if (grid3.containsDrag === true){
                                                     grid_3.answer = false
+                                                    grid_3.enable = true
                                                     check3()
+                                                }
+                                                else {
+                                                    disable()
                                                 }
                                             }
                                         }
@@ -516,15 +554,21 @@ ApplicationWindow{
                                             onObjReleased:{
                                                 if (grid1.containsDrag === true){
                                                     grid_1.answer = false
+                                                    grid_1.enable = true
                                                     check1()
                                                 }
                                                 else if (grid2.containsDrag === true){
                                                     grid_2.answer = false
+                                                    grid_2.enable = true
                                                     check2()
                                                 }
                                                 else if (grid3.containsDrag === true){
                                                     grid_3.answer = true
+                                                    grid_3.enable = true
                                                     check3()
+                                                }
+                                                else {
+                                                    disable()
                                                 }
                                             }
                                         }
@@ -543,15 +587,21 @@ ApplicationWindow{
                                             onObjReleased:{
                                                 if (grid1.containsDrag === true){
                                                     grid_1.answer = true
+                                                    grid_1.enable = true
                                                     check1()
                                                 }
                                                 else if (grid2.containsDrag === true){
                                                     grid_2.answer = false
+                                                    grid_2.enable = true
                                                     check2()
                                                 }
                                                 else if (grid3.containsDrag === true){
                                                     grid_3.answer = false
+                                                    grid_3.enable = true
                                                     check3()
+                                                }
+                                                else {
+                                                    disable()
                                                 }
                                             }
                                         }
@@ -570,9 +620,29 @@ ApplicationWindow{
         }
 
         //-- listview of tutorials and exams --//
+        Label{
+            id: open_list
+            visible: exam_list.visible === true ? false : true
+            Layout.fillHeight: true
+            Layout.preferredWidth: 20
+            font.family: "Material Design Icons"
+            font.pixelSize: Qt.application.font.pixelSize * 1.7
+            text: MdiFont.arrow_left_bold
+            verticalAlignment: "AlignVCenter"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    exam_list.visible = true
+                }
+            }
+        }
+
         Rectangle{
+            id: exam_list
+            visible: open_list.visible === true ? false : true
             Layout.fillHeight: true
             Layout.preferredWidth: 200
+            Layout.alignment: Qt.LeftToRight
             color: "#00FF0000"
 
             Rectangle{
@@ -608,6 +678,18 @@ ApplicationWindow{
                         Label{
                             text: "آموزش ها و آزمون ها"
                             anchors.centerIn: parent
+                        }
+                        Label {
+                            font.family: "Material Design Icons"
+                            font.pixelSize: Qt.application.font.pixelSize * 1.7
+                            text: MdiFont.close_circle
+                            verticalAlignment: "AlignVCenter"
+                            MouseArea{
+                                anchors.fill:parent
+                                onClicked: {
+                                    exam_list.visible = false
+                                }
+                            }
                         }
                     }
 
