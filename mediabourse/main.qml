@@ -317,8 +317,9 @@ ApplicationWindow{
                             //-- options 1, 2 --//
                             RowLayout{
                                 Layout.alignment: Qt.AlignHCenter
+                                Layout.fillWidth: true
                                 layoutDirection: Qt.RightToLeft
-                                spacing: 100
+                                spacing: 50
 
                                 ColumnLayout{
 
@@ -372,6 +373,30 @@ ApplicationWindow{
 
                                     }
 
+                                }
+                                ColumnLayout{
+                                    spacing: 50
+                                    Label{
+                                        verticalAlignment: "AlignVCenter"
+                                        font.family: "Material Design Icons"
+                                        font.pixelSize: Qt.application.font.pixelSize * 2
+                                        text: MdiFont.equal
+
+                                    }
+                                    Label{
+                                        verticalAlignment: "AlignVCenter"
+                                        font.family: "Material Design Icons"
+                                        font.pixelSize: Qt.application.font.pixelSize * 2
+                                        text: MdiFont.equal
+
+                                    }
+                                    Label{
+                                        verticalAlignment: "AlignVCenter"
+                                        font.family: "Material Design Icons"
+                                        font.pixelSize: Qt.application.font.pixelSize * 2
+                                        text: MdiFont.equal
+
+                                    }
                                 }
 
                                 ColumnLayout{
