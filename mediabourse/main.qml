@@ -20,62 +20,13 @@ ApplicationWindow{
     Material.theme: Material.Light
     //    flags: Qt.MSWindowsFixedSizeDialogHint
 
-    function disable(){
-        if (grid_1.enable === true){
-            rect1_img.visible = false
-            grid_1.enable = false
-        } else if (grid_2.enable === true){
-            rect2_img.visible = false
-            grid_2.enable = false
-        } else if (grid_3.enable === true){
-            rect3_img.visible = false
-            grid_3.enable = false
-        }
+
+    function correct(rect_im) {
+        rect_im.source = "qrc:/Content/images/tools/check.png"
     }
 
-    function check1() {
-        if (rect2_img.visible === true){
-            rect2_img.visible = false
-        } else if (rect3_img.visible === true){
-            rect3_img.visible = false
-        }
-
-        if (grid_1.answer === true){
-            rect1_img.source = "qrc:/Content/images/tools/check.png"
-
-        }
-        else {
-            rect1_img.source = "qrc:/Content/images/tools/wrong.png"
-        }
-        rect1_img.visible = true
-    }
-    function check2() {
-        if (rect1_img.visible === true){
-            rect1_img.visible = false
-        } else if (rect3_img.visible === true){
-            rect3_img.visible = false
-        }
-        if (grid_2.answer === true){
-            rect2_img.source = "qrc:/Content/images/tools/check.png"
-        }
-        else {
-            rect2_img.source = "qrc:/Content/images/tools/wrong.png"
-        }
-        rect2_img.visible = true
-    }
-    function check3() {
-        if (rect1_img.visible === true){
-            rect1_img.visible = false
-        } else if (rect2_img.visible === true){
-            rect2_img.visible = false
-        }
-        if (grid_3.answer === true){
-            rect3_img.source = "qrc:/Content/images/tools/check.png"
-        }
-        else {
-            rect3_img.source = "qrc:/Content/images/tools/wrong.png"
-        }
-        rect3_img.visible = true
+    function incorrect(rect_im){
+        rect_im.source = "qrc:/Content/images/tools/wrong.png"
     }
 
 
@@ -427,9 +378,6 @@ ApplicationWindow{
 
                                     Grid {
                                         id: grid_1
-
-                                        property bool answer: false
-                                        property bool enable: false
                                         anchors.margins: 5
                                         opacity: 0.5
                                         columns: 1
@@ -437,6 +385,14 @@ ApplicationWindow{
                                         DropTile {
                                             id: grid1
                                             colorKey: "red"
+                                            answer: "DPS"
+                                            onObjdropped: {
+                                                if (grid1.check === true){
+                                                    correct(rect1_img)
+                                                }else{
+                                                    incorrect(rect1_img)
+                                                }
+                                            }
                                         }
                                     }
                                     Grid {
@@ -448,7 +404,18 @@ ApplicationWindow{
                                         columns: 1
 
 
-                                        DropTile {id: grid2; colorKey: "red"}
+                                        DropTile {
+                                            id: grid2
+                                            colorKey: "red"
+                                            answer: "EPS"
+                                            onObjdropped: {
+                                                if (grid2.check === true){
+                                                    correct(rect2_img)
+                                                }else{
+                                                    incorrect(rect2_img)
+                                                }
+                                            }
+                                        }
 
                                     }
                                     Grid {
@@ -459,7 +426,18 @@ ApplicationWindow{
                                         opacity: 0.5
                                         columns: 1
 
-                                        DropTile {id: grid3; colorKey: "red" }
+                                        DropTile {
+                                            id: grid3
+                                            colorKey: "red"
+                                            answer: "P/E"
+                                            onObjdropped: {
+                                                if (grid3.check === true){
+                                                    correct(rect3_img)
+                                                }else{
+                                                    incorrect(rect3_img)
+                                                }
+                                            }
+                                        }
 
                                     }
                                 }
@@ -471,10 +449,9 @@ ApplicationWindow{
                                         Image {
                                             id: rect1_img
                                             anchors.centerIn: parent
-                                            source: "qrc:/Content/images/tools/wrong.png"
                                             sourceSize: Qt.size(50,50)
                                             verticalAlignment: Qt.AlignVCenter
-                                            visible: false
+                                            visible: grid1.contain === true ? true : false
                                         }
                                     }
                                     Label{
@@ -482,10 +459,9 @@ ApplicationWindow{
                                         Image {
                                             id: rect2_img
                                             anchors.centerIn: parent
-                                            source: "qrc:/Content/images/tools/wrong.png"
                                             sourceSize: Qt.size(50,50)
                                             verticalAlignment: Qt.AlignVCenter
-                                            visible: false
+                                            visible: grid2.contain === true ? true : false
 
                                         }
                                     }
@@ -494,10 +470,9 @@ ApplicationWindow{
                                         Image {
                                             id: rect3_img
                                             anchors.centerIn: parent
-                                            source: "qrc:/Content/images/tools/wrong.png"
                                             sourceSize: Qt.size(50,50)
                                             verticalAlignment: Qt.AlignVCenter
-                                            visible: false
+                                            visible: grid3.contain === true ? true : false
                                         }
                                     }
                                 }
@@ -509,101 +484,38 @@ ApplicationWindow{
                                     Layout.alignment: Qt.AlignRight
 
                                     Column {
-                                        objectName: "EPS"
                                         anchors.margins: 5
                                         width: 64
                                         spacing: -16
                                         DragTile {
                                             id: tile_opt4_2
+                                            objname: "EPS"
                                             modelText: "EPS"
                                             colorKey: "red"
-
-                                            onObjReleased:{
-                                                if (grid1.containsDrag === true){
-                                                    grid_1.answer = false
-                                                    grid_1.enable = true
-                                                    check1()
-                                                }
-                                                else if (grid2.containsDrag === true){
-                                                    grid_2.answer = true
-                                                    grid_2.enable = true
-                                                    check2()
-                                                }
-                                                else if (grid3.containsDrag === true){
-                                                    grid_3.answer = false
-                                                    grid_3.enable = true
-                                                    check3()
-                                                }
-                                                else {
-                                                    disable()
-                                                }
-                                            }
                                         }
 
                                     }
                                     Column {
-
-                                        objectName: "P/E"
                                         anchors.margins: 5
                                         width: 64
                                         spacing: -16
                                         DragTile {
                                             id: tile_opt5_2
+                                            objname: "P/E"
                                             modelText: "P/E"
                                             colorKey: "red"
-                                            onObjReleased:{
-                                                if (grid1.containsDrag === true){
-                                                    grid_1.answer = false
-                                                    grid_1.enable = true
-                                                    check1()
-                                                }
-                                                else if (grid2.containsDrag === true){
-                                                    grid_2.answer = false
-                                                    grid_2.enable = true
-                                                    check2()
-                                                }
-                                                else if (grid3.containsDrag === true){
-                                                    grid_3.answer = true
-                                                    grid_3.enable = true
-                                                    check3()
-                                                }
-                                                else {
-                                                    disable()
-                                                }
-                                            }
                                         }
 
                                     }
                                     Column {
-
-                                        objectName: "DPS"
                                         anchors.margins: 5
                                         width: 64
                                         spacing: -16
                                         DragTile {
                                             id: tile_opt6_2
+                                            objname: "DPS"
                                             modelText: "DPS"
                                             colorKey: "red"
-                                            onObjReleased:{
-                                                if (grid1.containsDrag === true){
-                                                    grid_1.answer = true
-                                                    grid_1.enable = true
-                                                    check1()
-                                                }
-                                                else if (grid2.containsDrag === true){
-                                                    grid_2.answer = false
-                                                    grid_2.enable = true
-                                                    check2()
-                                                }
-                                                else if (grid3.containsDrag === true){
-                                                    grid_3.answer = false
-                                                    grid_3.enable = true
-                                                    check3()
-                                                }
-                                                else {
-                                                    disable()
-                                                }
-                                            }
                                         }
 
                                     }
