@@ -49,7 +49,7 @@
         <file>Content/images/tools/check.png</file>
         <file>Content/images/tools/wrong.png</file>
         <file>Content/codes/Utils/QuestionTile.qml</file>
-        <file>DragTile.qml</file>
-        <file>DropTile.qml</file>
+        <file>Content/codes/Utils/DragTile.qml</file>
+        <file>Content/codes/Utils/DropTile.qml</file>
     </qresource>
 </RCC>
