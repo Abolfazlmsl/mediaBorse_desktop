@@ -302,6 +302,7 @@ ApplicationWindow{
                         visible: listmodel.get(lv.currentIndex).qNum === 2 ? true : false
                         property var answer_check: 0
                         property bool answer_complete: false
+                        property var right_check: 0
                         property var question_number: 3
 
                         width: parent.width * 0.8

@@ -9,6 +9,7 @@ DropArea {
     property bool check
     property bool contain: false
     property var answer_check: q2.answer_check
+    property var right_check: q2.right_check
     property bool answer_complete: q2.answer_complete
     property var question_number: q2.qustion_number
 
@@ -21,8 +22,8 @@ DropArea {
         user = drag.source.objectName
         if (answer === user){
             check = true
-            q2.answer_check += 1
-            if (q2.answer_check === q2.question_number){
+            q2.right_check += 1
+            if (q2.right_check === q2.question_number){
                 q2.answer_complete = true
             }
         }else{
