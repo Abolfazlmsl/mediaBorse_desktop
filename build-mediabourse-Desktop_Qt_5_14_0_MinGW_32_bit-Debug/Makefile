@@ -519,9 +519,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qml.cpp
 qrc_qml.cpp: ../mediabourse/qml.qrc \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_32/bin/rcc.exe \
-		../mediabourse/DragTile.qml \
 		../mediabourse/main.qml \
-		../mediabourse/DropTile.qml \
 		../mediabourse/Content/images/mediabourse.png \
 		../mediabourse/Content/images/mediabourse_100px.png \
 		../mediabourse/Content/images/tools/wrong.png \
@@ -534,7 +532,9 @@ qrc_qml.cpp: ../mediabourse/qml.qrc \
 		../mediabourse/Content/codes/Player.qml \
 		../mediabourse/Content/codes/PlayerWin.qml \
 		../mediabourse/Content/codes/Utils/SearchField.qml \
+		../mediabourse/Content/codes/Utils/DragTile.qml \
 		../mediabourse/Content/codes/Utils/QuestionTile.qml \
+		../mediabourse/Content/codes/Utils/DropTile.qml \
 		../mediabourse/Content/font/Icon.js \
 		../mediabourse/Content/font/segoeuil.ttf \
 		../mediabourse/Content/font/materialdesignicons-webfont.ttf \

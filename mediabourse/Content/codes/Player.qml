@@ -172,13 +172,6 @@ Item {
                     onMoved: {
                         player.seek((player.duration*sli_timer.value)/width)
                     }
-                    focus: true
-                    Keys.onRightPressed: {
-                        right_play()
-                    }
-                    Keys.onLeftPressed: {
-                        left_play()
-                    }
                     MouseArea{
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -315,7 +308,7 @@ Item {
                                     image.visible = false
                                     if (maximize.state === true){
                                         toolsGroup.visible = false
-                                        //                                        topGroup.visible = false
+                                        topGroup.visible = false
                                     }
 
                                 }
@@ -461,13 +454,6 @@ Item {
                                     }
 
                                 }
-                                focus: true
-                                Keys.onRightPressed: {
-                                    right_play()
-                                }
-                                Keys.onLeftPressed: {
-                                    left_play()
-                                }
 
                                 MouseArea{
                                     anchors.fill: parent
@@ -557,44 +543,50 @@ Item {
         }
 
         Shortcut{
-            //            sequence: "Ctrl+E,Ctrl+W"
-            sequence: "W"
+            sequence: "Space"
             onActivated:{
-
+                play_pause()
+            }
+        }
+        Shortcut{
+            sequence: "Right"
+            onActivated:{
+                right_play()
+            }
+        }
+        Shortcut{
+            sequence: "Left"
+            onActivated:{
+                left_play()
+            }
+        }
+        Shortcut{
+            sequence: "Up"
+            onActivated:{
+                slider_vol.value = (slider_vol.value + 5)
+                player.volume = slider_vol.value / 100
+            }
+        }
+        Shortcut{
+            sequence: "Down"
+            onActivated:{
+                slider_vol.value = (slider_vol.value - 5)
+                player.volume = slider_vol.value / 100
             }
         }
 
-        focus: true
-        Keys.onSpacePressed: {
-            play_pause()
-        }
-        Keys.onRightPressed: {
-            right_play()
-        }
-
-        Keys.onLeftPressed: {
-            left_play()
+        Shortcut{
+            sequence: "Enter"
+            onActivated:{
+                max_min()
+            }
         }
 
-        Keys.onUpPressed: {
-            slider_vol.value = (slider_vol.value + 5)
-            player.volume = slider_vol.value / 100
-
-        }
-
-        Keys.onDownPressed: {
-            slider_vol.value = (slider_vol.value - 5)
-            player.volume = slider_vol.value / 100
-
-        }
-
-        Keys.onEnterPressed: {
-            max_min()
-        }
-        Keys.onPressed: {
-            max_min()
+        Shortcut{
+            sequence: "Return"
+            onActivated:{
+                max_min()
+            }
         }
     }
-
-
 }
