@@ -11,10 +11,12 @@ import "./../"
 
 Rectangle{
     id: tile_opt1
-    
+
     property bool isAnswer: false        //-- is user chosed? --//
     property bool isCorrectOption: false //-- correct option --//
     property alias source: img_opt.source
+    property var answer_check: q1.answer_check
+    property bool answer_complete: q1.answer_complete
 
     width: 100
     height: 100
@@ -22,13 +24,13 @@ Rectangle{
     border.width: 1
     border.color: "#99000000"
     radius: 5
-    
+
     //-- image --//
     Item{
         anchors.fill: parent
         anchors.margins: 5
         clip: true
-        
+
         //-- options --//
         Image {
             id: img_opt
@@ -38,7 +40,7 @@ Rectangle{
             width: parent.width
             fillMode: Image.PreserveAspectFit
         }
-        
+
         //-- correct --//
         Image {
             visible: isCorrectOption && isAnswer ? true : false
@@ -51,7 +53,7 @@ Rectangle{
             fillMode: Image.PreserveAspectFit
             smooth: true
         }
-        
+
         //-- wrong --//
         Image {
             visible: !isCorrectOption && isAnswer ? true : false
@@ -64,13 +66,21 @@ Rectangle{
             fillMode: Image.PreserveAspectFit
             smooth: true
         }
-        
+
     }
-    
+
     ItemDelegate{
         anchors.fill: parent
         onClicked: {
             tile_opt1.isAnswer = true
+            if (!isCorrectOption){
+                if (q1.answer_check < 4){
+                    q1.answer_check += 1
+                }
+            }
+            else if (isCorrectOption && isAnswer){
+                q1.answer_complete = true
+            }
         }
     }
 }

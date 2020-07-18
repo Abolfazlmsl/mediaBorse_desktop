@@ -214,7 +214,10 @@ ApplicationWindow{
 
                     //-- q1 --//
                     Rectangle{
+                        id: q1
                         visible: listmodel.get(lv.currentIndex).qNum === 1 ? true : false
+                        property var answer_check: 0
+                        property bool answer_complete: false
 
                         width: parent.width * 0.8
                         height: parent.height * 0.8
@@ -295,7 +298,11 @@ ApplicationWindow{
 
                     //-- q2 --//
                     Rectangle{
+                        id: q2
                         visible: listmodel.get(lv.currentIndex).qNum === 2 ? true : false
+                        property var answer_check: 0
+                        property bool answer_complete: false
+                        property var question_number: 3
 
                         width: parent.width * 0.8
                         height: parent.height * 0.8
@@ -752,6 +759,19 @@ ApplicationWindow{
 
                                 //-- spliter --//
                                 Rectangle{width: parent.width; height: 1; color: "#e5e5e5"; anchors.bottom: parent.bottom}
+                                Image{
+
+                                    visible: q1.answer_complete && model.qNum === 1 ? true : false
+                                    source: "qrc:/Content/images/tools/done+exam+list+pencil+todo+icon-1320196901489830645.png"
+                                    sourceSize: Qt.size(30,30)
+                                }
+
+                                Image{
+
+                                    visible: q2.answer_complete && model.qNum === 2 ? true : false
+                                    source: "qrc:/Content/images/tools/done+exam+list+pencil+todo+icon-1320196901489830645.png"
+                                    sourceSize: Qt.size(30,30)
+                                }
 
                                 onClicked: {
                                     lv.currentIndex = index
