@@ -1,14 +1,16 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from socket import SOL_SOCKET, SO_REUSEADDR
 import re
 import time
 from tabulate import tabulate
+import socket
 
 namad = input("سهم مورد نظر را وارد کنید: ")
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome()
 
 driver.get("http://tsetmc.ir/")
 driver.find_element_by_id("search").click()
@@ -92,9 +94,9 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     ps = price_sell
     
     lp = lprice.text.split()
-    state = driver.find_element_by_xpath('//*[@id="d02"]/span[2]')
+    state = driver.find_element_by_xpath('//*[@id="d03"]/span[2]')
     state_lp = state.get_attribute('style')
-    
+
     lp = lprice.text.split()
     last_price = int(re.sub(r',', '', lp[0]).strip())
     lp_shakhes = int(re.sub(r',', '', lp[1]).strip())
@@ -137,13 +139,13 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         try:
             private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[2])[0])
         except:
-            private_turn_buy_percent = float(re.findall(r'\d', ptb[2])[0])
+            private_turn_buy_percent = float(re.findall(r'\d+', ptb[2])[0])
         pvb_hajm = str(ptb[0]) + str(ptb[1])
     else:
         try:
             private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[1])[0])
         except:
-            private_turn_buy_percent = float(re.findall(r'\d', ptb[1])[0])
+            private_turn_buy_percent = float(re.findall(r'\d+', ptb[1])[0])
         pvb_hajm = str(ptb[0])
     ptbp = private_turn_buy_percent
         
@@ -153,13 +155,13 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         try:
             legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[2])[0])
         except:
-            legal_turn_buy_percent = float(re.findall(r'\d', ltb[2])[0])
+            legal_turn_buy_percent = float(re.findall(r'\d+', ltb[2])[0])
         lvb_hajm = str(ltb[0]) + str(ltb[1])
     else:
         try:
             legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[1])[0])
         except:
-            legal_turn_buy_percent = float(re.findall(r'\d', ltb[1])[0])
+            legal_turn_buy_percent = float(re.findall(r'\d+', ltb[1])[0])
         lvb_hajm = str(ltb[0]) 
     ltbp = legal_turn_buy_percent
     
@@ -169,13 +171,13 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         try:
             private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[2])[0])
         except:
-            private_turn_sell_percent = float(re.findall(r'\d', pts[2])[0])
+            private_turn_sell_percent = float(re.findall(r'\d+', pts[2])[0])
         pvs_hajm = str(pts[0]) + str(pts[1])
     else:
         try:
             private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[1])[0])
         except:
-            private_turn_sell_percent = float(re.findall(r'\d', pts[1])[0])
+            private_turn_sell_percent = float(re.findall(r'\d+', pts[1])[0])
         pvs_hajm = str(pts[0])
     ptsp = private_turn_sell_percent
         
@@ -185,13 +187,13 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         try:
             legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[2])[0])
         except:
-            legal_turn_sell_percent = float(re.findall(r'\d', lts[2])[0])
+            legal_turn_sell_percent = float(re.findall(r'\d+', lts[2])[0])
         lvs_hajm = str(lts[0]) + str(lts[1])
     else:
         try:
             legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[1])[0])
         except:
-            legal_turn_sell_percent = float(re.findall(r'\d', lts[1])[0])
+            legal_turn_sell_percent = float(re.findall(r'\d+', lts[1])[0])
         lvs_hajm = str(lts[0]) 
     ltsp = legal_turn_sell_percent
         
@@ -228,5 +230,43 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     
 else:
     print('\nنماد %s ممنوع (متوقف) می باشد.'%namad)
-   
+
 driver.quit()
+
+##################################  Socket  #########################################
+s = socket.socket()
+print('#'*80)
+print("Socket successfully created")
+port = 8000
+
+s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+s.bind(('192.168.1.3', port))
+print("socket binded to %s" % port)
+
+s.listen(5)
+print("socket is listening")
+
+c, addr = s.accept()
+
+for i in range(3):
+    a = str(ps[i]) + ',' + str(vs[i]) + ',' + str(sn[i]) + ',' + str(pb[i]) +\
+    ',' + str(vb[i]) + ',' + str(bn[i])
+    c.send(a.encode())
+    time.sleep(1)
+
+c.send((str(pnb) + ',' + str(ptbp) + ',' + str(pvb_hajm)).encode()) 
+time.sleep(1)
+c.send((str(lnb) + ',' + str(ltbp) + ',' + str(lvb_hajm)).encode()) 
+time.sleep(1)
+c.send((str(pns) + ',' + str(ptsp) + ',' + str(pvs_hajm)).encode()) 
+time.sleep(1)
+c.send((str(lns) + ',' + str(ltsp) + ',' + str(lvs_hajm)).encode())
+time.sleep(1)
+c.send((str(max_price) + ',' + str(min_price)).encode())
+time.sleep(1)
+c.send((str(last_price) + ',' + str(lp_shakhes) + ',' + str(lp_percent)).encode())
+time.sleep(1)
+c.send((str(final_price) + ',' + str(fp_shakhes) + ',' + str(fp_percent)).encode())
+
+time.sleep(2)
+c.close()
