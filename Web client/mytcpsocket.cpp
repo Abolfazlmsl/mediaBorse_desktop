@@ -29,9 +29,6 @@ void MyTcpSocket::doConnect()
 void MyTcpSocket::connected()
 {
     qDebug() << "connected...";
-
-    // Hey server, tell me about you.
-    // socket->write("HEAD / HTTP/1.0\r\n\r\n\r\n\r\n");
 }
 
 void MyTcpSocket::disconnected()
@@ -51,33 +48,109 @@ void MyTcpSocket::readyRead()
 
     if (a == ""){
         a = socket->readAll();
-        qDebug() << a;
+        QStringList stringList = a.split(",");
+        std::vector<float> result1;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result1.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result1;
     }else if (b == ""){
         b = socket->readAll();
-        qDebug() << b;
+        QStringList stringList = b.split(",");
+        std::vector<float> result2;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result2.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result2;
     }else if (c == ""){
         c = socket->readAll();
-        qDebug() << c;
+        QStringList stringList = c.split(",");
+        std::vector<float> result3;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result3.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result3;
     }else if (d == ""){
         d = socket->readAll();
-        qDebug() << d;
+        QStringList stringList = d.split(",");
+        qDebug() << stringList;
     }else if (e == ""){
         e = socket->readAll();
-        qDebug() << e;
+        QStringList stringList = e.split(",");
+        qDebug() << stringList;
     }else if (f == ""){
         f = socket->readAll();
-        qDebug() << f;
+        QStringList stringList = f.split(",");
+        qDebug() << stringList;
     }else if (g == ""){
         g = socket->readAll();
-        qDebug() << g;
+        QStringList stringList = d.split(",");
+        qDebug() << stringList;
     }else if (h == ""){
         h = socket->readAll();
-        qDebug() << h;
+        QStringList stringList = h.split(",");
+        std::vector<float> result8;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result8.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result8;
     }else if (i == ""){
         i = socket->readAll();
-        qDebug() << i;
+        QStringList stringList = i.split(",");
+        std::vector<float> result9;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result9.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result9;
     }else if (j == ""){
         j = socket->readAll();
-        qDebug() << j;
+        QStringList stringList = j.split(",");
+        std::vector<float> result10;
+        bool ok;
+        for(QString item : stringList)
+        {
+            float itemNumber = item.toFloat(&ok);
+            if (ok)
+            {
+                result10.push_back(itemNumber);
+            }
+
+        }
+        qDebug() << result10;
     }
 }
