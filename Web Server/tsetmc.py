@@ -94,35 +94,42 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     ps = price_sell
     
     lp = lprice.text.split()
-    state = driver.find_element_by_xpath('//*[@id="d03"]/span[2]')
-    state_lp = state.get_attribute('style')
-
-    lp = lprice.text.split()
     last_price = int(re.sub(r',', '', lp[0]).strip())
-    lp_shakhes = int(re.sub(r',', '', lp[1]).strip())
-    try:
-        lp_percent = float(re.findall(r'\d+\W\d+', lp[2])[0])
-    except:
-        lp_percent = float(re.findall(r'\d', lp[2])[0])
-        
-    if 'red' in state_lp:
-        lp_percent = -1*lp_percent
-        lp_shakhes = -1*lp_shakhes
-        
     fp = fprice.text.split()
-    state = driver.find_element_by_xpath('//*[@id="d03"]/span')
-    state_fp = state.get_attribute('style')
-    
     final_price = int(re.sub(r',', '', fp[0]).strip())
-    fp_shakhes = int(re.sub(r',', '', fp[1]).strip())
     try:
-        fp_percent = float(re.findall(r'\d+\W\d+', fp[2])[0])
+        state = driver.find_element_by_xpath('//*[@id="d02"]/span[2]')
+        state_lp = state.get_attribute('style')
+        
+        lp = lprice.text.split()     
+        lp_shakhes = int(re.sub(r',', '', lp[1]).strip())
+        try:
+            lp_percent = float(re.findall(r'\d+\W\d+', lp[2])[0])
+        except:
+            lp_percent = float(re.findall(r'\d', lp[2])[0])
+            
+        if 'red' in state_lp:
+            lp_percent = -1*lp_percent
+            lp_shakhes = -1*lp_shakhes
+            
+        
+        state = driver.find_element_by_xpath('//*[@id="d03"]/span')
+        state_fp = state.get_attribute('style')
+               
+        fp_shakhes = int(re.sub(r',', '', fp[1]).strip())
+        try:
+            fp_percent = float(re.findall(r'\d+\W\d+', fp[2])[0])
+        except:
+            fp_percent = float(re.findall(r'\d', fp[2])[0])
+        
+        if 'red' in state_fp:
+            fp_percent = -1*fp_percent
+            fp_shakhes = -1*fp_shakhes
     except:
-        fp_percent = float(re.findall(r'\d', fp[2])[0])
-    
-    if 'red' in state_fp:
-        fp_percent = -1*fp_percent
-        fp_shakhes = -1*fp_shakhes
+        lp_shakhes = 0
+        lp_percent = 0
+        fp_shakhes = 0
+        fp_percent = 0
     
     turnover = turnover.text
     
@@ -133,82 +140,96 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     max_price = [int(re.sub(r',', '', i).strip()) for i in max_price]
     max_price = int(max_price[0])
 
-    private_turn_buy = private_turn_buy.text.split()    
-    ptb = private_turn_buy
-    if len(ptb)==3:
-        try:
-            private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[2])[0])
-        except:
-            private_turn_buy_percent = float(re.findall(r'\d+', ptb[2])[0])
-        pvb_hajm = str(ptb[0]) + str(ptb[1])
-    else:
-        try:
-            private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[1])[0])
-        except:
-            private_turn_buy_percent = float(re.findall(r'\d+', ptb[1])[0])
-        pvb_hajm = str(ptb[0])
-    ptbp = private_turn_buy_percent
+    try:
+        private_turn_buy = private_turn_buy.text.split()    
+        ptb = private_turn_buy
+        if len(ptb)==3:
+            try:
+                private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[2])[0])
+            except:
+                private_turn_buy_percent = float(re.findall(r'\d+', ptb[2])[0])
+            pvb_hajm = str(ptb[0]) + str(ptb[1])
+        else:
+            try:
+                private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[1])[0])
+            except:
+                private_turn_buy_percent = float(re.findall(r'\d+', ptb[1])[0])
+            pvb_hajm = str(ptb[0])
+        ptbp = private_turn_buy_percent
+            
+        legal_turn_buy = legal_turn_buy.text.split()
+        ltb = legal_turn_buy
+        if len(ltb)==3:
+            try:
+                legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[2])[0])
+            except:
+                legal_turn_buy_percent = float(re.findall(r'\d+', ltb[2])[0])
+            lvb_hajm = str(ltb[0]) + str(ltb[1])
+        else:
+            try:
+                legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[1])[0])
+            except:
+                legal_turn_buy_percent = float(re.findall(r'\d+', ltb[1])[0])
+            lvb_hajm = str(ltb[0]) 
+        ltbp = legal_turn_buy_percent
         
-    legal_turn_buy = legal_turn_buy.text.split()
-    ltb = legal_turn_buy
-    if len(ltb)==3:
-        try:
-            legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[2])[0])
-        except:
-            legal_turn_buy_percent = float(re.findall(r'\d+', ltb[2])[0])
-        lvb_hajm = str(ltb[0]) + str(ltb[1])
-    else:
-        try:
-            legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[1])[0])
-        except:
-            legal_turn_buy_percent = float(re.findall(r'\d+', ltb[1])[0])
-        lvb_hajm = str(ltb[0]) 
-    ltbp = legal_turn_buy_percent
-    
-    private_turn_sell = private_turn_sell.text.split()
-    pts = private_turn_sell
-    if len(pts)==3:
-        try:
-            private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[2])[0])
-        except:
-            private_turn_sell_percent = float(re.findall(r'\d+', pts[2])[0])
-        pvs_hajm = str(pts[0]) + str(pts[1])
-    else:
-        try:
-            private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[1])[0])
-        except:
-            private_turn_sell_percent = float(re.findall(r'\d+', pts[1])[0])
-        pvs_hajm = str(pts[0])
-    ptsp = private_turn_sell_percent
-        
-    legal_turn_sell = legal_turn_sell.text.split()
-    lts = legal_turn_sell
-    if len(lts)==3:
-        try:
-            legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[2])[0])
-        except:
-            legal_turn_sell_percent = float(re.findall(r'\d+', lts[2])[0])
-        lvs_hajm = str(lts[0]) + str(lts[1])
-    else:
-        try:
-            legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[1])[0])
-        except:
-            legal_turn_sell_percent = float(re.findall(r'\d+', lts[1])[0])
-        lvs_hajm = str(lts[0]) 
-    ltsp = legal_turn_sell_percent
-        
-    private_num_buy = private_num_buy.text.split()
-    private_num_buy = [int(re.sub(r',', '', i).strip()) for i in private_num_buy]
-    pnb = int(private_num_buy[0])
-    legal_num_buy = legal_num_buy.text.split()
-    legal_num_buy = [int(re.sub(r',', '', i).strip()) for i in legal_num_buy]
-    lnb = int(legal_num_buy[0])
-    private_num_sell = private_num_sell.text.split()
-    private_num_sell = [int(re.sub(r',', '', i).strip()) for i in private_num_sell]
-    pns = int(private_num_sell[0])
-    legal_num_sell = legal_num_sell.text.split()
-    legal_num_sell = [int(re.sub(r',', '', i).strip()) for i in legal_num_sell]
-    lns = int(legal_num_sell[0])
+        private_turn_sell = private_turn_sell.text.split()
+        pts = private_turn_sell
+        if len(pts)==3:
+            try:
+                private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[2])[0])
+            except:
+                private_turn_sell_percent = float(re.findall(r'\d+', pts[2])[0])
+            pvs_hajm = str(pts[0]) + str(pts[1])
+        else:
+            try:
+                private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[1])[0])
+            except:
+                private_turn_sell_percent = float(re.findall(r'\d+', pts[1])[0])
+            pvs_hajm = str(pts[0])
+        ptsp = private_turn_sell_percent
+            
+        legal_turn_sell = legal_turn_sell.text.split()
+        lts = legal_turn_sell
+        if len(lts)==3:
+            try:
+                legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[2])[0])
+            except:
+                legal_turn_sell_percent = float(re.findall(r'\d+', lts[2])[0])
+            lvs_hajm = str(lts[0]) + str(lts[1])
+        else:
+            try:
+                legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[1])[0])
+            except:
+                legal_turn_sell_percent = float(re.findall(r'\d+', lts[1])[0])
+            lvs_hajm = str(lts[0]) 
+        ltsp = legal_turn_sell_percent
+            
+        private_num_buy = private_num_buy.text.split()
+        private_num_buy = [int(re.sub(r',', '', i).strip()) for i in private_num_buy]
+        pnb = int(private_num_buy[0])
+        legal_num_buy = legal_num_buy.text.split()
+        legal_num_buy = [int(re.sub(r',', '', i).strip()) for i in legal_num_buy]
+        lnb = int(legal_num_buy[0])
+        private_num_sell = private_num_sell.text.split()
+        private_num_sell = [int(re.sub(r',', '', i).strip()) for i in private_num_sell]
+        pns = int(private_num_sell[0])
+        legal_num_sell = legal_num_sell.text.split()
+        legal_num_sell = [int(re.sub(r',', '', i).strip()) for i in legal_num_sell]
+        lns = int(legal_num_sell[0])
+    except:
+        pnb = 0
+        ptbp = 0
+        pvb_hajm = 0
+        lnb = 0
+        ltbp = 0
+        lvb_hajm = 0
+        pns = 0
+        ptsp = 0
+        pvs_hajm = 0
+        lns = 0
+        ltsp = 0
+        lvs_hajm = 0
     
     print('\nنماد %s %s می باشد.'%(namad, situation))
     print('\n')
@@ -240,7 +261,7 @@ print("Socket successfully created")
 port = 8000
 
 s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-s.bind(('192.168.1.3', port))
+s.bind(('192.168.0.104', port))
 print("socket binded to %s" % port)
 
 s.listen(5)
