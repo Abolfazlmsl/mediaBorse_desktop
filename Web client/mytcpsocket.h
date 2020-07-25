@@ -10,11 +10,10 @@ class MyTcpSocket : public QObject
     Q_OBJECT
 public:
     explicit MyTcpSocket(QObject *parent = 0);
-
+    QString a, b, c, d, e, f, g, h, i, j;
     void doConnect();
 
 signals:
-
 public slots:
     void connected();
     void disconnected();
