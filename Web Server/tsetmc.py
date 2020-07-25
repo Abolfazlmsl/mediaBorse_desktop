@@ -143,6 +143,7 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     try:
         private_turn_buy = private_turn_buy.text.split()    
         ptb = private_turn_buy
+        ptb[0] = re.sub(',','', ptb[0])
         if len(ptb)==3:
             try:
                 private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[2])[0])
@@ -159,6 +160,7 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
             
         legal_turn_buy = legal_turn_buy.text.split()
         ltb = legal_turn_buy
+        ltb[0] = re.sub(',','', ltb[0])
         if len(ltb)==3:
             try:
                 legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[2])[0])
@@ -175,6 +177,7 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         
         private_turn_sell = private_turn_sell.text.split()
         pts = private_turn_sell
+        pts[0] = re.sub(',','', pts[0])
         if len(pts)==3:
             try:
                 private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[2])[0])
@@ -191,6 +194,7 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
             
         legal_turn_sell = legal_turn_sell.text.split()
         lts = legal_turn_sell
+        lts[0] = re.sub(',','', lts[0])
         if len(lts)==3:
             try:
                 legal_turn_sell_percent = float(re.findall(r'\d+\W\d+', lts[2])[0])
