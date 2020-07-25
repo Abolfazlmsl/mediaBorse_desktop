@@ -248,46 +248,46 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
     print('\n')    
     print(tabulate([[ps[0], vs[0], sn[0], pb[0], vb[0], bn[0]], [ps[1], vs[1], sn[1], pb[1], vb[1], bn[1]] , [ps[2], vs[2], sn[2], pb[2], vb[2], bn[2]]],\
                headers=['Number', 'Turn', 'Price','Price', 'Turn', 'Number'], tablefmt='orgtbl'))    
+
+    ##################################  Socket  #########################################
+    s = socket.socket()
+    print('#'*80)
+    print("Socket successfully created")
+    port = 8000
     
+    s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    s.bind(('192.168.0.104', port))
+    print("socket binded to %s" % port)
+    
+    s.listen(5)
+    print("socket is listening")
+    
+    c, addr = s.accept()
+    
+    for i in range(3):
+        a = str(ps[i]) + ',' + str(vs[i]) + ',' + str(sn[i]) + ',' + str(pb[i]) +\
+        ',' + str(vb[i]) + ',' + str(bn[i])
+        c.send(a.encode())
+        time.sleep(1)
+    
+    c.send((str(pnb) + ',' + str(ptbp) + ',' + str(pvb_hajm)).encode()) 
+    time.sleep(1)
+    c.send((str(lnb) + ',' + str(ltbp) + ',' + str(lvb_hajm)).encode()) 
+    time.sleep(1)
+    c.send((str(pns) + ',' + str(ptsp) + ',' + str(pvs_hajm)).encode()) 
+    time.sleep(1)
+    c.send((str(lns) + ',' + str(ltsp) + ',' + str(lvs_hajm)).encode())
+    time.sleep(1)
+    c.send((str(max_price) + ',' + str(min_price)).encode())
+    time.sleep(1)
+    c.send((str(last_price) + ',' + str(lp_shakhes) + ',' + str(lp_percent)).encode())
+    time.sleep(1)
+    c.send((str(final_price) + ',' + str(fp_shakhes) + ',' + str(fp_percent)).encode())
+    
+    time.sleep(2)
+    c.close()
+        
 else:
     print('\nنماد %s ممنوع (متوقف) می باشد.'%namad)
 
 driver.quit()
-
-##################################  Socket  #########################################
-s = socket.socket()
-print('#'*80)
-print("Socket successfully created")
-port = 8000
-
-s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-s.bind(('192.168.0.104', port))
-print("socket binded to %s" % port)
-
-s.listen(5)
-print("socket is listening")
-
-c, addr = s.accept()
-
-for i in range(3):
-    a = str(ps[i]) + ',' + str(vs[i]) + ',' + str(sn[i]) + ',' + str(pb[i]) +\
-    ',' + str(vb[i]) + ',' + str(bn[i])
-    c.send(a.encode())
-    time.sleep(1)
-
-c.send((str(pnb) + ',' + str(ptbp) + ',' + str(pvb_hajm)).encode()) 
-time.sleep(1)
-c.send((str(lnb) + ',' + str(ltbp) + ',' + str(lvb_hajm)).encode()) 
-time.sleep(1)
-c.send((str(pns) + ',' + str(ptsp) + ',' + str(pvs_hajm)).encode()) 
-time.sleep(1)
-c.send((str(lns) + ',' + str(ltsp) + ',' + str(lvs_hajm)).encode())
-time.sleep(1)
-c.send((str(max_price) + ',' + str(min_price)).encode())
-time.sleep(1)
-c.send((str(last_price) + ',' + str(lp_shakhes) + ',' + str(lp_percent)).encode())
-time.sleep(1)
-c.send((str(final_price) + ',' + str(fp_shakhes) + ',' + str(fp_percent)).encode())
-
-time.sleep(2)
-c.close()
