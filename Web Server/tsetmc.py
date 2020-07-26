@@ -72,7 +72,6 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
                                                         for i in range (2,5)])
         
         
-<<<<<<< HEAD
         lprice = driver.find_element_by_xpath('//*[@id="d02"]')
         fprice = driver.find_element_by_xpath('//*[@id="d03"]')
         turnover = driver.find_element_by_xpath('//*[@id="d09"]')
@@ -119,82 +118,6 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
             
             lp = lprice.text.split()     
             lp_shakhes = int(re.sub(r',', '', lp[1]).strip())
-=======
-        if 'red' in state_fp:
-            fp_percent = -1*fp_percent
-            fp_shakhes = -1*fp_shakhes
-    except:
-        lp_shakhes = 0
-        lp_percent = 0
-        fp_shakhes = 0
-        fp_percent = 0
-    
-    turnover = turnover.text
-    
-    min_price = min_price.text.split()
-    min_price = [int(re.sub(r',', '', i).strip()) for i in min_price]
-    min_price = int(min_price[0])
-    max_price = max_price.text.split()
-    max_price = [int(re.sub(r',', '', i).strip()) for i in max_price]
-    max_price = int(max_price[0])
-
-    try:
-        private_turn_buy = private_turn_buy.text.split()    
-        ptb = private_turn_buy
-        ptb[0] = re.sub(',','', ptb[0])
-        if len(ptb)==3:
-            try:
-                private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[2])[0])
-            except:
-                private_turn_buy_percent = float(re.findall(r'\d+', ptb[2])[0])
-            pvb_hajm = str(ptb[0]) + str(ptb[1])
-        else:
-            try:
-                private_turn_buy_percent = float(re.findall(r'\d+\W\d+', ptb[1])[0])
-            except:
-                private_turn_buy_percent = float(re.findall(r'\d+', ptb[1])[0])
-            pvb_hajm = str(ptb[0])
-        ptbp = private_turn_buy_percent
-            
-        legal_turn_buy = legal_turn_buy.text.split()
-        ltb = legal_turn_buy
-        ltb[0] = re.sub(',','', ltb[0])
-        if len(ltb)==3:
-            try:
-                legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[2])[0])
-            except:
-                legal_turn_buy_percent = float(re.findall(r'\d+', ltb[2])[0])
-            lvb_hajm = str(ltb[0]) + str(ltb[1])
-        else:
-            try:
-                legal_turn_buy_percent = float(re.findall(r'\d+\W\d+', ltb[1])[0])
-            except:
-                legal_turn_buy_percent = float(re.findall(r'\d+', ltb[1])[0])
-            lvb_hajm = str(ltb[0]) 
-        ltbp = legal_turn_buy_percent
-        
-        private_turn_sell = private_turn_sell.text.split()
-        pts = private_turn_sell
-        pts[0] = re.sub(',','', pts[0])
-        if len(pts)==3:
-            try:
-                private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[2])[0])
-            except:
-                private_turn_sell_percent = float(re.findall(r'\d+', pts[2])[0])
-            pvs_hajm = str(pts[0]) + str(pts[1])
-        else:
-            try:
-                private_turn_sell_percent = float(re.findall(r'\d+\W\d+', pts[1])[0])
-            except:
-                private_turn_sell_percent = float(re.findall(r'\d+', pts[1])[0])
-            pvs_hajm = str(pts[0])
-        ptsp = private_turn_sell_percent
-            
-        legal_turn_sell = legal_turn_sell.text.split()
-        lts = legal_turn_sell
-        lts[0] = re.sub(',','', lts[0])
-        if len(lts)==3:
->>>>>>> 5e9d283de24ab39065c943b0a9c63489ef50a1c2
             try:
                 lp_percent = float(re.findall(r'\d+\W\d+', lp[2])[0])
             except:
@@ -362,7 +285,6 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
         time.sleep(1)
     
         ##################################  Socket  #########################################
-
         with open('data.txt', 'rb') as f:
             c.sendfile(f)
         
