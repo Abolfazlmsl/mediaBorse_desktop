@@ -5,6 +5,7 @@ import re
 import time
 from tabulate import tabulate
 import socket
+import json
 
 namad = input("سهم مورد نظر را وارد کنید: ")
 
@@ -269,24 +270,43 @@ if situation != 'ممنوع-متوقف' and situation != 'ممنوع':
                    headers=['Number', 'Turn', 'Price','Price', 'Turn', 'Number'], tablefmt='orgtbl'))  
         print('#'*80)
               
-        with open("data.txt", "w") as f:
-            f.write('%s,%s,%s,'% (str(last_price),str(lp_shakhes),str(lp_percent)))
-            f.write('%s,%s,%s,'% (str(final_price),str(fp_shakhes),str(fp_percent)))
-            f.write('%s,'%str(turnover))
-            f.write('%s,%s,'%(str(min_price), str(max_price)))
-            f.write('%s,%s,%s,'%(str(pnb), str(ptbp), str(pvb_hajm)))
-            f.write('%s,%s,%s,'%(str(lnb), str(ltbp), str(lvb_hajm)))
-            f.write('%s,%s,%s,'%(str(pns), str(ptsp), str(pvs_hajm)))
-            f.write('%s,%s,%s,'%(str(lns), str(ltsp), str(lvs_hajm)))
-            for i in range(3):
-                f.write('%s, %s, %s, %s, %s, %s,'%(str(ps[i]), str(vs[i]), str(sn[i]), str(pb[i]),\
-                str(vb[i]), str(bn[i])))
+              
+        data = {"Last price":last_price, "Last shakhes": lp_shakhes, "Last_percent": lp_percent,\
+                "Final price":last_price, "Final shakhes": lp_shakhes, "Final percent": lp_percent,\
+                "Turnover": turnover, "Min price":min_price, "Max price": max_price, "pnb": pnb,\
+                "ptbp":ptbp, "pvb_hajm": pvb_hajm, "lnb": lnb, "ltbp": ltbp, "lvb_hajm": lvb_hajm,\
+                "pns":pns, "ptsp": ptsp, "pvs_hajm": pvs_hajm, "lns": lns, "ltsp": ltsp,\
+                "lvs_hajm":lvs_hajm}
+        for i in range(3):
+            data["ps"+str(i)] = str(ps[i])
+            data["vs"+str(i)] = str(vs[i])
+            data["sn"+str(i)] = str(sn[i])
+            data["pb"+str(i)] = str(pb[i])
+            data["vb"+str(i)] = str(vb[i])
+            data["bn"+str(i)] = str(bn[i])
+            
+        data = json.dumps(data)
+            
+#        with open("data.txt", "w") as f:
+#            f.write('%s,%s,%s,'% (str(last_price),str(lp_shakhes),str(lp_percent)))
+#            f.write('%s,%s,%s,'% (str(final_price),str(fp_shakhes),str(fp_percent)))
+#            f.write('%s,'%str(turnover))
+#            f.write('%s,%s,'%(str(min_price), str(max_price)))
+#            f.write('%s,%s,%s,'%(str(pnb), str(ptbp), str(pvb_hajm)))
+#            f.write('%s,%s,%s,'%(str(lnb), str(ltbp), str(lvb_hajm)))
+#            f.write('%s,%s,%s,'%(str(pns), str(ptsp), str(pvs_hajm)))
+#            f.write('%s,%s,%s,'%(str(lns), str(ltsp), str(lvs_hajm)))
+#            for i in range(3):
+#                f.write('%s, %s, %s, %s, %s, %s,'%(str(ps[i]), str(vs[i]), str(sn[i]), str(pb[i]),\
+#                str(vb[i]), str(bn[i])))
 
         time.sleep(1)
     
         ##################################  Socket  #########################################
-        with open('data.txt', 'rb') as f:
-            c.sendfile(f)
+#        with open('data.txt', 'rb') as f:
+#            c.sendfile(f)
+        
+        c.send(data.encode())
         
 #        
 #        for i in range(3):
