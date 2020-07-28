@@ -12,6 +12,7 @@ void MyTcpSocket::doConnect()
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
+    connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
 
     qDebug() << "connecting...";
 
