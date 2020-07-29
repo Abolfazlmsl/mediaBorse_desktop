@@ -7,8 +7,6 @@ Created on Wed Jul 29 10:14:51 2020
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.keys import Keys
 import re
 import time
 from tabulate import tabulate
