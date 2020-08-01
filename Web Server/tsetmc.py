@@ -308,16 +308,14 @@ class ClientThread(threading.Thread):
                                     
                         ##################################  Socket  #########################################                
                         self.csocket.send(data.encode())    
+                        
+                else:
+                    print('\nنماد %s ممنوع (متوقف) می باشد.'%self.namad)
+                    data = {"State":"ممنوع"}
+                    data = json.dumps(data)
+                    self.csocket.send(data.encode())    
+                    
                 time.sleep(0.1)
-
-        else:
-            print('\nنماد %s ممنوع (متوقف) می باشد.'%self.namad)
-            data = {"State":"ممنوع"}
-            data = json.dumps(data)
-            self.csocket.send(data.encode())    
-            time.sleep(2)
-            driver.quit()
-            self.csocket.close()
 
 if __name__ == "__main__":    
     print('#'*80)
@@ -337,7 +335,7 @@ if __name__ == "__main__":
         c, addr = server.accept()
         clientsock.append(c)
         clientAddress.append(addr)
-        namad = ['خمحرکه','فولاد']
+        namad = ['خمحرکه','شپنا']
         newthread.append(ClientThread(clientAddress[i], clientsock[i], namad))
         newthread[i].start()
         i += 1
