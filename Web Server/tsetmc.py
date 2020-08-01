@@ -29,33 +29,37 @@ class ClientThread(threading.Thread):
     def scrape(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-        driver = webdriver.Chrome(options=chrome_options)
+#        driver = webdriver.Chrome(options=chrome_options)
+        driver = webdriver.Chrome()
         
         driver.get("http://tsetmc.com/")
-
+        
         search = ''
         while search == '':
-            try:
-                driver.find_element_by_id("search").click()
+            driver.find_element_by_id("search").click()
+            
+            for i in self.namad:
+                driver.find_element_by_id("SearchKey").send_keys(i)
+                time.sleep(2)
+                search = ''
+                while search == '':
+                    try:
+                        search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr[1]/td[1]/a')
+                    except:
+                        search = ''
+                index = 2
+                while 'نماد قدیمی' in search.text:
+                    search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr['+str(index)+']/td[1]/a')
+                    index += 1
+                link = search.get_attribute('href')
+                driver.execute_script('''window.open("{}","_blank");'''.format(link))
                 
-                for i in self.namad:
-                    driver.find_element_by_id("SearchKey").send_keys(i)
-                    time.sleep(2)
-                    search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr[1]/td[1]/a')
-        
-                    index = 2
-                    while 'نماد قدیمی' in search.text:
-                        search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr['+str(index)+']/td[1]/a')
-                        index += 1
-                    aa = search.get_attribute('href')
-                    driver.execute_script('''window.open("{}","_blank");'''.format(aa))
+                driver.find_element_by_id("SearchKey").clear()
                     
-                    driver.find_element_by_id("SearchKey").clear()
-                    
-            except:
-                driver.refresh()
+
         windows = driver.window_handles
         while True:
+            time.sleep(1)
             for i in range(1, self.num+1):          
                 driver.switch_to.window(windows[self.num + 1 - i])        
                 situation = driver.find_element_by_xpath('//*[@id="d01"]')
@@ -305,7 +309,7 @@ class ClientThread(threading.Thread):
                                     
                         ##################################  Socket  #########################################                
                         self.csocket.send(data.encode())    
-                time.sleep(1/self.num)
+                time.sleep(0.1)
 
         else:
             print('\nنماد %s ممنوع (متوقف) می باشد.'%self.namad)
@@ -334,7 +338,7 @@ if __name__ == "__main__":
         c, addr = server.accept()
         clientsock.append(c)
         clientAddress.append(addr)
-        namad = ['فملی','فولاد','خمحرکه','خپارس']
+        namad = ['خمحرکه','فولاد']
         newthread.append(ClientThread(clientAddress[i], clientsock[i], namad))
         newthread[i].start()
         i += 1
