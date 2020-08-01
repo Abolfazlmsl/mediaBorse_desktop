@@ -29,8 +29,7 @@ class ClientThread(threading.Thread):
     def scrape(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-#        driver = webdriver.Chrome(options=chrome_options)
-        driver = webdriver.Chrome()
+        driver = webdriver.Chrome(options=chrome_options)
         
         driver.get("http://tsetmc.com/")
         
