@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 29 10:14:51 2020
-
-@author: Developer 01
-"""
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import re
@@ -310,14 +303,16 @@ class ClientThread(threading.Thread):
                         self.csocket.send(data.encode())    
                         
                 else:
-                    print('\nنماد %s ممنوع (متوقف) می باشد.'%self.namad)
+                    print('\nنماد %s ممنوع (متوقف) می باشد.'%self.namad[i-1])
                     data = {"State":"ممنوع"}
                     data = json.dumps(data)
                     self.csocket.send(data.encode())    
                     
                 time.sleep(0.1)
 
-if __name__ == "__main__":    
+
+if __name__ == "__main__": 
+    
     print('#'*80)
     LOCALHOST = "192.168.0.104"
     PORT = 8000
@@ -335,7 +330,7 @@ if __name__ == "__main__":
         c, addr = server.accept()
         clientsock.append(c)
         clientAddress.append(addr)
-        namad = ['خمحرکه','شپنا']
+        namad = ['خموتور','شستا','خمحرکه','شپنا']
         newthread.append(ClientThread(clientAddress[i], clientsock[i], namad))
         newthread[i].start()
         i += 1
