@@ -24,4 +24,4 @@ private:
     QTcpSocket *socket;
 };
 
-#endif // MYTCPSOCKET_H
+#endif

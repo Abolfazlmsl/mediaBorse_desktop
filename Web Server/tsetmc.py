@@ -22,39 +22,39 @@ class ClientThread(threading.Thread):
     def scrape(self):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-        driver = webdriver.Chrome(options=chrome_options)
+        self.drive = webdriver.Chrome(options=chrome_options)
         
-        driver.get("http://tsetmc.com/")
+        self.drive.get("http://tsetmc.ir/")
         
         search = ''
         while search == '':
-            driver.find_element_by_id("search").click()
+            self.drive.find_element_by_id("search").click()
             
             for i in self.namad:
-                driver.find_element_by_id("SearchKey").send_keys(i)
+                self.drive.find_element_by_id("SearchKey").send_keys(i)
                 time.sleep(2)
                 search = ''
                 while search == '':
                     try:
-                        search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr[1]/td[1]/a')
+                        search = self.drive.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr[1]/td[1]/a')
                     except:
                         search = ''
                 index = 2
                 while 'نماد قدیمی' in search.text:
-                    search = driver.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr['+str(index)+']/td[1]/a')
+                    search = self.drive.find_element_by_xpath('//*[@id="SearchResult"]/div/div[2]/table/tbody/tr['+str(index)+']/td[1]/a')
                     index += 1
                 link = search.get_attribute('href')
-                driver.execute_script('''window.open("{}","_blank");'''.format(link))
+                self.drive.execute_script('''window.open("{}","_blank");'''.format(link))
                 
-                driver.find_element_by_id("SearchKey").clear()
+                self.drive.find_element_by_id("SearchKey").clear()
                     
 
-        windows = driver.window_handles
+        windows = self.drive.window_handles
         while True:
             time.sleep(1)
             for i in range(1, self.num+1):          
-                driver.switch_to.window(windows[self.num + 1 - i])        
-                situation = driver.find_element_by_xpath('//*[@id="d01"]')
+                self.drive.switch_to.window(windows[self.num + 1 - i])        
+                situation = self.drive.find_element_by_xpath('//*[@id="d01"]')
             
                 while situation.text=='':
                     pass
@@ -67,40 +67,40 @@ class ClientThread(threading.Thread):
                         vol_buy = []
                         price_buy = []
                 
-                        buy_number.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[1]') \
+                        buy_number.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[1]') \
                                                                         for i in range (2,5)])
-                        vol_buy.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[2]') \
+                        vol_buy.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[2]') \
                                                                         for i in range (2,5)])
-                        price_buy.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[3]') \
+                        price_buy.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[3]') \
                                                                         for i in range (2,5)])
                         sell_number = []
                         vol_sell = []
                         price_sell = []
                         
-                        sell_number.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[4]') \
+                        sell_number.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[4]') \
                                                                         for i in range (2,5)])
-                        vol_sell.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[5]') \
+                        vol_sell.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[5]') \
                                                                         for i in range (2,5)])
-                        price_sell.append([driver.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[6]') \
+                        price_sell.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr['+str(i)+']/td[6]') \
                                                                         for i in range (2,5)])
                         
                         
-                        lprice = driver.find_element_by_xpath('//*[@id="d02"]')
-                        fprice = driver.find_element_by_xpath('//*[@id="d03"]')
-                        turnover = driver.find_element_by_xpath('//*[@id="d09"]')
+                        lprice = self.drive.find_element_by_xpath('//*[@id="d02"]')
+                        fprice = self.drive.find_element_by_xpath('//*[@id="d03"]')
+                        turnover = self.drive.find_element_by_xpath('//*[@id="d09"]')
                         
-                        private_turn_buy = driver.find_element_by_xpath('//*[@id="e0"]')
-                        legal_turn_buy = driver.find_element_by_xpath('//*[@id="e1"]')
-                        private_turn_sell = driver.find_element_by_xpath('//*[@id="e3"]')
-                        legal_turn_sell = driver.find_element_by_xpath('//*[@id="e4"]')
+                        private_turn_buy = self.drive.find_element_by_xpath('//*[@id="e0"]')
+                        legal_turn_buy = self.drive.find_element_by_xpath('//*[@id="e1"]')
+                        private_turn_sell = self.drive.find_element_by_xpath('//*[@id="e3"]')
+                        legal_turn_sell = self.drive.find_element_by_xpath('//*[@id="e4"]')
                         
-                        private_num_buy = driver.find_element_by_xpath('//*[@id="e5"]')
-                        legal_num_buy = driver.find_element_by_xpath('//*[@id="e6"]')
-                        private_num_sell = driver.find_element_by_xpath('//*[@id="e8"]')
-                        legal_num_sell = driver.find_element_by_xpath('//*[@id="e9"]')
+                        private_num_buy = self.drive.find_element_by_xpath('//*[@id="e5"]')
+                        legal_num_buy = self.drive.find_element_by_xpath('//*[@id="e6"]')
+                        private_num_sell = self.drive.find_element_by_xpath('//*[@id="e8"]')
+                        legal_num_sell = self.drive.find_element_by_xpath('//*[@id="e9"]')
                         
-                        min_price = driver.find_element_by_xpath('//*[@id="d07"]')
-                        max_price = driver.find_element_by_xpath('//*[@id="d06"]')
+                        min_price = self.drive.find_element_by_xpath('//*[@id="d07"]')
+                        max_price = self.drive.find_element_by_xpath('//*[@id="d06"]')
                         
                         buy_number = [buy_number[0][i].text for i in range(3)]
                         buy_number = [int(re.sub(r',', '', i).strip()) if i!=' ' else 0 for i in buy_number]
@@ -126,7 +126,7 @@ class ClientThread(threading.Thread):
                         fp = fprice.text.split()
                         final_price = int(re.sub(r',', '', fp[0]).strip())
                         try:
-                            state = driver.find_element_by_xpath('//*[@id="d02"]/span[2]')
+                            state = self.drive.find_element_by_xpath('//*[@id="d02"]/span[2]')
                             state_lp = state.get_attribute('style')
                             
                             lp = lprice.text.split()     
@@ -141,7 +141,7 @@ class ClientThread(threading.Thread):
                                 lp_shakhes = -1*lp_shakhes
                                 
                             
-                            state = driver.find_element_by_xpath('//*[@id="d03"]/span')
+                            state = self.drive.find_element_by_xpath('//*[@id="d03"]/span')
                             state_fp = state.get_attribute('style')
                                    
                             fp_shakhes = int(re.sub(r',', '', fp[1]).strip())
