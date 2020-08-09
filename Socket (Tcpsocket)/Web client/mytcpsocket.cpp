@@ -17,7 +17,7 @@ void MyTcpSocket::doConnect()
     qDebug() << "connecting...";
 
     // this is not blocking call
-    socket->connectToHost("192.168.1.3", 8000);
+    socket->connectToHost("192.168.0.104", 7000);
 
     // we need to wait...
     if(!socket->waitForConnected(1000000000))
