@@ -79,11 +79,11 @@ class ClientThread(threading.Thread):
                     vol_sell = []
                     price_sell = []
 
-                    sell_number.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr[' + str(i) + ']/td[4]') \
+                    price_sell.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr[' + str(i) + ']/td[4]') \
                                         for i in range(2, 5)])
                     vol_sell.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr[' + str(i) + ']/td[5]') \
                                      for i in range(2, 5)])
-                    price_sell.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr[' + str(i) + ']/td[6]') \
+                    sell_number.append([self.drive.find_element_by_xpath('//*[@id="bl"]/tr[' + str(i) + ']/td[6]') \
                                        for i in range(2, 5)])
 
                     lprice = self.drive.find_element_by_xpath('//*[@id="d02"]')
@@ -292,12 +292,12 @@ class ClientThread(threading.Thread):
                             "pns": pns, "ptsp": ptsp, "pvs_hajm": pvs_hajm, "lns": lns, "ltsp": ltsp, \
                             "lvs_hajm": lvs_hajm}
                     for i in range(3):
-                        data["ps" + str(i)] = str(ps[i])
-                        data["vs" + str(i)] = str(vs[i])
-                        data["sn" + str(i)] = str(sn[i])
-                        data["pb" + str(i)] = str(pb[i])
-                        data["vb" + str(i)] = str(vb[i])
-                        data["bn" + str(i)] = str(bn[i])
+                        data["price_sell" + str(i)] = str(ps[i])
+                        data["volume_sell" + str(i)] = str(vs[i])
+                        data["number_sell" + str(i)] = str(sn[i])
+                        data["price_buy" + str(i)] = str(pb[i])
+                        data["volume_buy" + str(i)] = str(vb[i])
+                        data["number_buy" + str(i)] = str(bn[i])
                     
                     data_list.append(data)
 
