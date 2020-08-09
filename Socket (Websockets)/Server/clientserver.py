@@ -7,6 +7,10 @@ import json
 import threading
 
 class ClientThread(threading.Thread):
+    '''
+        This class scrape the data from the tsetmc.ir website and return the
+        data in the json format.
+    '''
     def __init__(self, host, port, namad):
         threading.Thread.__init__(self)    
         self.namad = namad

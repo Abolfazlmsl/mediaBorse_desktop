@@ -9,6 +9,10 @@ import threading
 stopFlag = False
 
 class GetData (threading.Thread):
+    '''
+        This class Scrape and update the data continuously and returns the 
+        new data to the Handler.run function.
+    '''
     def __init__(self, obj, data):
         threading.Thread.__init__(self)
         self.data = data
@@ -21,6 +25,13 @@ class GetData (threading.Thread):
             return self.lastData
 
 class Handler (threading.Thread):
+    '''
+        This class do the followings:
+            1- Add new client to the self.connected (if client become disconnected,
+               the client will be removed).
+            2- Get the new data from the GetData class
+            3- Send the data to the each existed clients.
+    '''
     def __init__(self):
         threading.Thread.__init__(self)
         self.connected = set()
