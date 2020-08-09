@@ -4,7 +4,7 @@ import nest_asyncio
 
 async def hello():
 
-    uri = "ws://192.168.1.3:8000"
+    uri = "ws://192.168.0.104:8000"
     async with websockets.connect(uri) as websocket:
 
         while True:

@@ -284,7 +284,7 @@ class ClientThread(threading.Thread):
 #                        headers=['Number', 'Turn', 'Price', 'Price', 'Turn', 'Number'], tablefmt='orgtbl'))
 #                    print('#' * 80)
 
-                    data = {"State": situation, "Last price": last_price, "Last shakhes": lp_shakhes,
+                    data = {"Name": self.namad[i-1], "State": situation, "Last price": last_price, "Last shakhes": lp_shakhes,
                             "Last_percent": lp_percent, \
                             "Final price": last_price, "Final shakhes": lp_shakhes, "Final percent": lp_percent, \
                             "Turnover": turnover, "Min price": min_price, "Max price": max_price, "pnb": pnb, \
@@ -303,7 +303,7 @@ class ClientThread(threading.Thread):
 
                 else:
 #                    print('\nنماد %s ممنوع (متوقف) می باشد.' % self.namad[i - 1])
-                    data = {"State": "ممنوع"}
+                    data = {"Name": self.namad[i-1], "State": "ممنوع"}
                     data_list.append(data)
                     
                 time.sleep(0.1)

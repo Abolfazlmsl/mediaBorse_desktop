@@ -35,7 +35,6 @@ class Handler (threading.Thread):
                 loop1.close()   
 
     async def handler(self, websocket, path):
-        print(websocket)
         self.connected.add(websocket)
         print('connect successfully.')
         print('#'*80)
@@ -47,14 +46,12 @@ class Handler (threading.Thread):
           self.connected.remove(websocket)
           
     async def sendData(self, data):
-        print('kir')
-        print(self.connected)
         for websocket in self.connected.copy():
             await websocket.send(data)
 
 if __name__ == "__main__":
     namad = ['خمحرکه','شپنا']
-    host = '192.168.1.3'
+    host = '192.168.0.104'
     port = 8000
     obj = ClientThread(host, port, namad)
     print('#'*80)
@@ -69,7 +66,7 @@ if __name__ == "__main__":
     try:
         handle.start()
 
-        ws_server = websockets.serve(handle.handler, '192.168.1.3', 8000)
+        ws_server = websockets.serve(handle.handler, '192.168.0.104', 8000)
         nest_asyncio.apply()
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ws_server)

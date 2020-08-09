@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     parser.process(a);
     bool debug = parser.isSet(dbgOption);
 
-    EchoClient client(QUrl(QStringLiteral("ws://192.168.1.3:8000")), debug);
+    EchoClient client(QUrl(QStringLiteral("ws://192.168.0.104:8000")), debug);
     QObject::connect(&client, &EchoClient::closed, &a, &QCoreApplication::quit);
 
     return a.exec();
