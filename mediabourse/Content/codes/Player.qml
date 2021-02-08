@@ -5,6 +5,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.3
 import Qt.labs.platform 1.0
+import VLCQt 1.1
 import "./../font/Icon.js" as MdiFont
 
 Item {
@@ -22,14 +23,13 @@ Item {
     property bool isIgnoreOffset: false
 
     function play_pause() {
-        console.log("player.playbackState: " + player.playbackState + MediaPlayer.PlayingState + MediaPlayer.PlayingState)
-        if(player.playbackState === MediaPlayer.PlayingState){
+        if(player.state === 3){
 
             console.log("pause")
             player.pause()
         }
-        else if(player.playbackState === MediaPlayer.PausedState
-                || player.playbackState === MediaPlayer.StoppedState){
+        else if(player.state === 4
+                || player.state === 5){
             console.log("play")
             player.play()
 
@@ -37,16 +37,17 @@ Item {
     }
 
     function right_play() {
-        if(player.playbackState !== 0){
+        if(player.state !== 0){
 
-            player.seek(player.position + 5000)
+            player.position = player.position + 0.0005
+
         }
     }
 
     function left_play() {
-        if(player.playbackState !== 0){
+        if(player.state !== 0){
 
-            player.seek(player.position - 5000)
+            player.position = player.position - 0.0005
         }
     }
 
@@ -83,34 +84,35 @@ Item {
 
         Image{
             id: image
-            visible: player.playbackState === MediaPlayer.PlayingState ? false : true
+            visible: player.state === 3 ? false : true
             anchors.centerIn: parent
             source: 'qrc:/Content/images/mediabourse.png'
             verticalAlignment: Image.AlignVCenter
             horizontalAlignment: Image.AlignHCenter
         }
 
-        MediaPlayer {
+        VlcPlayer {
             id: player
             //notifyInterval: 100
-            source: "file:///D:/projects/mediabourse/toturials/videos/mediabourse_candle.mp4"
-            //            autoPlay: true
+//            url: "file:///G:/ویدیو/Enemy.at.the.Gates.2001.720p.Farsi.Dubbed.Film9.mkv"
+//            url: "https://hajifirouz1.cdn.asset.aparat.com/aparat-video/db824d6a07f1d4fa371043b81ee6a91529812210-720p.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjBkN2UyYjIzOTk2ZTdhMmMwNWJkM2ViN2YxYWJlYTU0IiwiZXhwIjoxNjEyNzMwMjczLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.GlSp5GHbLmExl6GHwluu0X-nqxLvz4FFmMH4hSiNh2E"
+//            autoplay: true
 
             onPositionChanged: {
-                var min = Math.floor(player.position/60000)
-                var sec = ((player.position - (min*60000))/1000).toFixed(0)
+                var min = Math.floor(player.time/60000)
+                var sec = ((player.time - (min*60000))/1000).toFixed(0)
 
-                var total_min = Math.floor(player.duration/60000)
-                var total_sec = ((player.duration - (total_min*60000))/1000).toFixed(0)
+                var total_min = Math.floor(player.length/60000)
+                var total_sec = ((player.length - (total_min*60000))/1000).toFixed(0)
 
-                lblTimeSpend.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec) + " / " + (total_min) + ":" + (total_sec)
+                lblTimeSpend.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec) + " / " + (total_min<10 ? "0"+total_min : total_min) + ":" + (total_sec<10 ? "0"+total_sec : total_sec)
 
-                var lackTime = player.duration - player.position
+                var lackTime = player.length - player.time
                 min = Math.floor(lackTime/60000)
                 sec = ((lackTime - (min*60000))/1000).toFixed(0)
 
                 lblTimeLack.text = (min<10 ? "0"+min : min) + ":" + (sec<10 ? "0"+sec : sec)
-                if (player.position === player.duration){
+                if (player.time === player.length){
                     topGroup.visible = true
                     toolsGroup.visible = true
                 }
@@ -118,7 +120,7 @@ Item {
 
         }
 
-        VideoOutput {
+        VlcVideoOutput {
             id: vidOut
 
             anchors.fill: parent
@@ -168,9 +170,9 @@ Item {
                     Layout.topMargin: -20
                     from: 0
                     to: width
-                    value: (player.position/player.duration) * width
+                    value: (player.time/player.length) * width
                     onMoved: {
-                        player.seek((player.duration*sli_timer.value)/width)
+                        player.time = (player.length*sli_timer.value)/width
                     }
                     MouseArea{
                         anchors.fill: parent
@@ -251,7 +253,7 @@ Item {
                                     from: 1
                                     value: 1
                                     onValueChanged: {
-                                        player.playbackRate = value
+                                        vidOut.aspectRatio = value
                                     }
 
                                     to: 4
@@ -303,7 +305,7 @@ Item {
                                 property var vURL: currentFile.toString().split("/")
                                 property var lURL: vURL[vURL.length-1]
                                 onAccepted: {
-                                    player.source = currentFile
+                                    player.url = currentFile
                                     player.play()
                                     image.visible = false
                                     if (maximize.state === true){
@@ -335,7 +337,7 @@ Item {
                         Label{
                             font.family: "Material Design Icons"
                             font.pixelSize: Qt.application.font.pixelSize * 2
-                            text: player.playbackState === 1 ? MdiFont.pause: MdiFont.play
+                            text: player.state === 3 ? MdiFont.pause: MdiFont.play
 
                             MouseArea{
                                 id: ma_play
@@ -419,7 +421,7 @@ Item {
                                             else {
                                                 btn_soundLevel.text = MdiFont.volume_low
                                             }
-                                            player.volume = slider_vol.value / 100
+                                            player.volume = slider_vol.value
                                             btn_soundLevel.state = true
                                         }
                                     }
@@ -439,7 +441,7 @@ Item {
                                 to: 100
                                 orientation: Qt.Horizontal
                                 onValueChanged: {
-                                    player.volume = value/100
+                                    player.volume = value
                                     if (slider_vol.value > 75){
                                         btn_soundLevel.text = MdiFont.volume_high
                                     }
@@ -564,14 +566,14 @@ Item {
             sequence: "Up"
             onActivated:{
                 slider_vol.value = (slider_vol.value + 5)
-                player.volume = slider_vol.value / 100
+                player.volume = slider_vol.value
             }
         }
         Shortcut{
             sequence: "Down"
             onActivated:{
                 slider_vol.value = (slider_vol.value - 5)
-                player.volume = slider_vol.value / 100
+                player.volume = slider_vol.value
             }
         }
 
